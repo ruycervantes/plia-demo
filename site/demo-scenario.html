@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Scenario — Alfonso el Sabio | Stoic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--base-white);
+    }
+
+    /* Top Bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--base-white);
+      border-bottom: 3px solid var(--stoic-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+    }
+    .top-bar .logo {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .top-bar .doc-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Back link */
+    .back-link {
+      display: block;
+      margin-top: 70px;
+      padding: 1rem 2rem;
+      font-size: 0.9rem;
+      color: var(--stoic-red);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem 2.5rem;
+      background: var(--base-white);
+    }
+    .hero h1 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      padding: 1.5rem 2rem;
+      background: #fafafa;
+      border-radius: 8px;
+      border-left: 4px solid var(--stoic-yellow);
+    }
+    .toc h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+    }
+    .toc ol {
+      padding-left: 1.25rem;
+    }
+    .toc li {
+      margin-bottom: 0.35rem;
+    }
+    .toc a {
+      color: var(--stoic-red);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Sections */
+    .section {
+      padding: 3rem 2rem;
+    }
+    .section:nth-child(even) {
+      background: #fafafa;
+    }
+    .section-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--stoic-yellow);
+    }
+    h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--stoic-red);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    h4 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    strong { font-weight: 600; }
+
+    blockquote {
+      border-left: 4px solid var(--stoic-red);
+      padding: 1rem 1.5rem;
+      background: #fafafa;
+      font-style: italic;
+      margin: 1.25rem 0;
+      border-radius: 0 6px 6px 0;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .section:nth-child(even) blockquote {
+      background: var(--base-white);
+    }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* Character cards */
+    .character-card {
+      background: var(--base-white);
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid var(--stoic-red);
+    }
+    .section:nth-child(even) .character-card {
+      background: var(--base-white);
+    }
+    .character-card .char-name {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--stoic-red);
+      margin-bottom: 0.1rem;
+    }
+    .character-card .char-role {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .character-card ul {
+      margin-bottom: 0;
+    }
+
+    /* Misalignment cards */
+    .misalignment {
+      background: var(--base-white);
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .section:nth-child(even) .misalignment {
+      background: var(--base-white);
+    }
+    .misalignment-number {
+      display: inline-block;
+      background: var(--stoic-red);
+      color: var(--base-white);
+      font-weight: 700;
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+      font-size: 0.95rem;
+    }
+    .misalignment h3 {
+      display: inline;
+      vertical-align: middle;
+      margin-top: 0;
+    }
+    .misalignment-header {
+      margin-bottom: 1.25rem;
+    }
+
+    /* Layer cards */
+    .layer-card {
+      background: var(--base-white);
+      border: 2px solid var(--stoic-yellow);
+      border-radius: 8px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .section:nth-child(even) .layer-card {
+      background: var(--base-white);
+    }
+    .layer-card h3 {
+      margin-top: 0;
+    }
+    .layer-card .layer-label {
+      display: inline-block;
+      background: var(--stoic-yellow);
+      color: var(--black);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      max-width: 700px;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.95rem;
+    }
+    thead th {
+      background: var(--black);
+      color: var(--base-white);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    tbody td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--stoic-gray);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* Horizontal rules */
+    hr {
+      border: none;
+      border-top: 1px solid var(--stoic-gray);
+      margin: 2rem 0;
+    }
+
+    /* Purpose badge */
+    .purpose-badge {
+      background: #fafafa;
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+    .purpose-badge strong {
+      color: var(--black);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--stoic-gray);
+    }
+    .footer a {
+      color: var(--stoic-red);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      h2 { font-size: 1.6rem; }
+      .section { padding: 2rem 1.25rem; }
+      .top-bar { padding: 0.75rem 1rem; }
+      .misalignment { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <a href="index.html" class="logo">Stoic</a>
+  <span class="doc-label">DEMO SCENARIO</span>
+</div>
+
+<!-- Back Link -->
+<a href="index.html" class="back-link">&larr; Back to Hub</a>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Alfonso el Sabio</h1>
+  <p class="subtitle">Demo Scenario &mdash; Fictional iZen Production</p>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#the-production">The Production</a></li>
+    <li><a href="#the-team">The Team</a></li>
+    <li><a href="#real-production-dynamics">Real Production Dynamics</a></li>
+    <li><a href="#example-misalignments">Example Misalignments</a></li>
+    <li><a href="#why-this-works">Why This Works: Two Layers</a></li>
+    <li><a href="#financial-context">Financial Context</a></li>
+    <li><a href="#language-notes">Language Notes</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ol>
+</div>
+
+<!-- Purpose -->
+<div class="section">
+  <div class="section-inner">
+    <div class="purpose-badge">
+      <strong>Purpose:</strong> Fictional but grounded scenario to seed the investor demo prototype with realistic characters, roles, language, and problems. Based on real IZEN production patterns from El Cid, dysfunction patterns from Clapperboard/IZEN co-productions, and findings from Axialent's HPT intervention with iZen (Oct-Nov 2025).
+    </div>
+  </div>
+</div>
+
+<!-- The Production -->
+<div class="section" id="the-production">
+  <div class="section-inner">
+    <h2>The Production</h2>
+    <table>
+      <tbody>
+        <tr><td><strong>Title</strong></td><td>Alfonso el Sabio (Alfonso the Wise)</td></tr>
+        <tr><td><strong>Format</strong></td><td>Premium historical drama, 8 episodes, Season 1</td></tr>
+        <tr><td><strong>Platform</strong></td><td>Prime Video (like El Cid)</td></tr>
+        <tr><td><strong>Production company</strong></td><td>Zebra Producciones (iZen's premium scripted label)</td></tr>
+        <tr><td><strong>Scale</strong></td><td>Large &mdash; period drama with battles, court intrigue, multiple locations across Castile</td></tr>
+        <tr><td><strong>Shooting locations</strong></td><td>Toledo, Burgos, Segovia, Madrid (studios)</td></tr>
+        <tr><td><strong>Timeline</strong></td><td>5-month shoot, pre-production started 3 months ago</td></tr>
+        <tr><td><strong>Budget</strong></td><td>~15M EUR (mid-high for Spanish standards; El Cid was Spain's biggest-budget series)</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Premise:</strong> The life of Alfonso X of Castile &mdash; king, scholar, lawmaker, astronomer. A man who tried to unite three cultures (Christian, Muslim, Jewish) through knowledge while his own family plotted against him. Political intrigue + intellectual ambition + medieval spectacle.</p>
+  </div>
+</div>
+
+<!-- The Team -->
+<div class="section" id="the-team">
+  <div class="section-inner">
+    <h2>The Team</h2>
+    <h3>Core Leadership (the team being onboarded in the demo)</h3>
+
+    <div class="character-card">
+      <div class="char-name">Sara Fernandez-Velasco</div>
+      <div class="char-role">Executive Producer / CEO of iZen</div>
+      <ul>
+        <li>Not on set daily. Oversees from Madrid. Needs visibility into how things are going across all her productions.</li>
+        <li><strong>Her concern:</strong> budget, timeline, and that this production represents iZen's brand to Prime Video.</li>
+        <li><strong>Time:</strong> 5-10 minutes max per production check-in. She has 6 other productions running simultaneously.</li>
+        <li><strong>What drives her:</strong> the legacy of iZen as Spain's premier production house. She wants Alfonso to be the series that proves iZen can compete with international period dramas.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Marcos Duran</div>
+      <div class="char-role">Showrunner / Head Writer</div>
+      <ul>
+        <li>Created the series. Deeply invested in historical accuracy and narrative vision.</li>
+        <li><strong>His concern:</strong> the scripts are being compromised by budget cuts and schedule pressure.</li>
+        <li><strong>Pattern:</strong> tends to make commitments about rewrites without checking with the writers' room timeline.</li>
+        <li><strong>What drives him:</strong> amor al arte. He spent 2 years researching Alfonso X. The Escuela de Traductores, the Cantigas de Santa Maria, the astronomical tables &mdash; he wants to bring this world to life faithfully. Every corner he's asked to cut feels like a betrayal of the material.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Pilar Ortega</div>
+      <div class="char-role">Line Producer</div>
+      <ul>
+        <li>Runs the day-to-day production operation. Budget, schedule, crew, logistics.</li>
+        <li><strong>Her concern:</strong> keeping 200+ crew on track, managing locations across 4 cities, coordinating two shooting units. She is the <strong>sole bridge</strong> between Toledo and Madrid units, between creative and operations, between the production and Sara. Everything flows through her and she's drowning.</li>
+        <li><strong>Pattern:</strong> absorbs problems silently until they become emergencies. There's no clear escalation path &mdash; when should she bother Sara? When is a problem "big enough"? So she holds everything until it explodes.</li>
+        <li><strong>What drives her:</strong> professional pride. She's run 15 productions without a major blowup. She wants this streak to continue. But this production is grinding her down &mdash; <em>"dedicarse a este trabajo es un ejercicio de renuncia diaria"</em> &mdash; she compromises her standards every day because the schedule won't allow her to do things right, and it's exhausting.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Javier Montero</div>
+      <div class="char-role">Lead Director (Episodes 1-4)</div>
+      <ul>
+        <li>Veteran. 25 years in Spanish television. Strong opinions about visual style.</li>
+        <li><strong>His concern:</strong> the DP isn't giving him the "epic" look he wants, and the battle sequences need more prep time.</li>
+        <li><strong>Pattern:</strong> makes decisions on set that affect other departments without coordinating. "I need this location for 3 more days" &mdash; said to no one until it's too late.</li>
+        <li><strong>What drives him:</strong> the battle of Ecija. He's been visualizing it for months. A single unbroken tracking shot through the cavalry charge. This is his signature moment, and he'll fight for it.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Lucia Castellanos</div>
+      <div class="char-role">Director (Episodes 5-8)</div>
+      <ul>
+        <li>Younger, rising talent. First major period drama.</li>
+        <li><strong>Her concern:</strong> inheriting Javier's creative decisions in a way that allows her own voice. Continuity vs. freshness.</li>
+        <li><strong>Pattern:</strong> agrees to things in meetings to avoid conflict, then struggles with them privately.</li>
+        <li><strong>What drives her:</strong> this is her breakout project. She wants the episodes to be undeniably hers while respecting the series' vision. She's not avoiding conflict out of passivity &mdash; she's navigating power dynamics carefully because she knows her position is precarious.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Tomas Reyes</div>
+      <div class="char-role">Director of Photography (DP)</div>
+      <ul>
+        <li>Technically brilliant. Wants every frame to be cinematic.</li>
+        <li><strong>His concern:</strong> the schedule doesn't allow for the lighting setups he needs. Two units means he can't be everywhere.</li>
+        <li><strong>Pattern:</strong> commits to a visual standard in creative meetings, then can't deliver it with the schedule he has. Doesn't flag the gap until shooting day.</li>
+        <li><strong>What drives him:</strong> craft. He studied the cinematography of Barry Lyndon for the candlelight scenes. He knows exactly what the show should look like and it kills him when the schedule forces compromises. Every day is renunciation &mdash; he doesn't have the time, the equipment, or the conditions to do the work the way it should be done.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Elena Vidal</div>
+      <div class="char-role">Production Designer</div>
+      <ul>
+        <li>Responsible for the entire visual world: sets, props, period accuracy.</li>
+        <li><strong>Her concern:</strong> the Toledo sets aren't ready on schedule, and Marcos keeps adding scenes in new locations.</li>
+        <li><strong>Pattern:</strong> gets pulled into scope creep by the showrunner without Pilar (line producer) knowing. "Marcos asked me to build a new set for the astronomy scene" &mdash; but nobody budgeted it.</li>
+        <li><strong>What drives her:</strong> the scriptorium. She's been collaborating with medieval historians on the set design. When Marcos asks for one more scene in the scriptorium, she says yes because she wants to see that set used &mdash; not because she has the budget. She knows she's being pulled into scope creep. She does it anyway because amor al arte outweighs process compliance when you've spent 4 months building a medieval world.</li>
+      </ul>
+    </div>
+
+    <div class="character-card">
+      <div class="char-name">Raul Ibanez</div>
+      <div class="char-role">Post-Production Supervisor</div>
+      <ul>
+        <li>Manages VFX, editing, color, sound. Not on set &mdash; works from Madrid.</li>
+        <li><strong>His concern:</strong> material isn't arriving labeled correctly, and the two-unit setup means inconsistent footage quality.</li>
+        <li><strong>Pattern:</strong> raises issues in email that nobody reads until post-production is in crisis.</li>
+        <li><strong>What drives him:</strong> he knows that post is where the show gets made or ruined. The VFX for the astronomical sequences (Alfonso's observatory, the celestial maps) are his chance to do something truly original. But he can't do it if the raw material arrives broken.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Real Production Dynamics -->
+<div class="section" id="real-production-dynamics">
+  <div class="section-inner">
+    <h2>Real Production Dynamics</h2>
+
+    <h3>The Kick-Off That Never Happens</h3>
+    <p>In reality, proper team onboarding almost never happens. From real iZen data:</p>
+    <ul>
+      <li>Pere Agullo (Dir. Produccion): <em>"La reunion de produccion se suele hacer 3 semanas antes del inicio del rodaje. En Benidorm se ha hizo justo el fin de semana antes del inicio del rodaje."</em></li>
+      <li><em>"El equipo practicamente no se ha conocido, tampoco en su forma de trabajar."</em></li>
+      <li>Jesus Diaz arrived mid-production as a <em>"paracaidista"</em> &mdash; sent to fix problems in Canarias. Didn't know who decides what, who to talk to, what the team's working agreements were. <em>"He llegado aqui de paracaidista; dado que aqui hay problemas y por eso me mandan."</em></li>
+    </ul>
+    <p>This is what Scene 1 (Team Onboarding) prevents. But the real power is: <strong>the onboarding artifact doesn't just serve week 1.</strong> When Jesus arrives in week 6, he opens the team's agreements on his phone and immediately knows: who's my boss, how do we escalate, what did this team commit to. In transient teams, people arrive and leave constantly &mdash; the living agreement is their orientation, not a 3-hour meeting they missed.</p>
+
+    <h3>What the System Learns From Previous Productions</h3>
+    <p>This is iZen's 6th major production. The same problems keep appearing (from real data: <em>"Hacemos informes, pero nadie los usa despues; se repiten los mismos errores"</em>). The system carries institutional memory that currently dies when the crew disbands:</p>
+    <ul>
+      <li>Dual-unit setups drift into "us vs. them" by week 3-4 (seen in 3 of last 4 productions)</li>
+      <li>Directors making scope decisions without line producer involvement (seen in Cacao, Benidorm)</li>
+      <li>Post-production email response lag averages 11 days when no escalation path is defined</li>
+      <li>Kick-offs that happen less than 1 week before shoot correlate with 2x the misalignment rate in weeks 1-3</li>
+      <li>The "si" that means "I heard you" vs "I commit" &mdash; pattern appears in every production, causes the most expensive cascades</li>
+    </ul>
+    <p>During onboarding (Scene 1), the system surfaces these as suggestions: <em>"Equipos con dos unidades que no mantienen un sync diario tienden a dividirse en semana 3-4. Quieres incluir un sync diario como acuerdo operativo?"</em> Pilar taps yes &mdash; because she's seen it happen. The agreement is smarter because the system remembers what she's too busy to remember.</p>
+    <p>Then in Sara's dashboard (Scene 5), the system monitors whether these agreements hold: <em>"El sync diario que acordaron en semana 1 no se ha practicado desde semana 4."</em> Prevention (onboarding) + detection (dashboard). The learning compounds.</p>
+
+    <h3>The Two-Unit Problem</h3>
+    <p>Alfonso el Sabio uses two units &mdash; Javier shoots in Toledo/Burgos while a second unit handles Madrid studio work. This creates:</p>
+    <ul>
+      <li>Coordination gaps between units</li>
+      <li>Different creative interpretations of the same scenes</li>
+      <li>Pilar splitting her attention between locations</li>
+      <li>Commitments made in one unit that affect the other ("we're keeping this location 2 extra days" &rarr; schedule cascade)</li>
+      <li>Over time, units develop separate identities. Toledo crew starts saying "the Madrid team" instead of "our team." (From real data: in troubled co-productions, "the team" (unified) appeared 2 times vs "their/your team" 43 times in email analysis.)</li>
+    </ul>
+
+    <h3>The 200+ Crew Coordination</h3>
+    <p>Over 200 production staff. Department heads each run semi-autonomous teams. Information flows through Pilar, but she can't be everywhere. Key problems:</p>
+    <ul>
+      <li><strong>"Quien es mi jefe?"</strong> &mdash; People literally don't know who they report to, who has decision authority, or what the chain of command is. (From real data: <em>"Todavia no tengo claro que hace cada uno ni con quien tengo que hablar segun el tema."</em> And: <em>"No se han tomado decisiones con antelacion... no esta nada claro quien toma que decisiones."</em>)</li>
+      <li><strong>"Quien decide que?"</strong> &mdash; On-set decisions (location changes, schedule extensions, budget reallocations) get made by whoever has the most informal authority in the moment.</li>
+      <li>Commitments made verbally on set never reach the people who need to act on them</li>
+      <li>Department heads assume someone told the other department</li>
+      <li>Sara gets a polished weekly report that doesn't reflect the actual state of things</li>
+      <li>Issues raised in email go unread for weeks (from real data: average time to address issues in troubled productions = 4-6 weeks)</li>
+      <li>Problems go UP (to Pilar, to Sara) instead of ACROSS (department to department). Peer resolution is rare.</li>
+      <li><strong>Blame replaces problem-solving.</strong> When things go wrong, communication shifts from "how do we fix this?" to "whose fault is this?" (From real data: <em>"Todo el mundo se dedica a trasladar problemas, sin que nadie aporte soluciones."</em> And: <em>"Nadie empatiza, cada uno tira por su lado, no tiene culpa de nada y el otro es siempre el culpable."</em>)</li>
+    </ul>
+
+    <h3>The Platform Pressure</h3>
+    <p>Prime Video expects a specific quality bar and delivery timeline. Sara is the interface between the production and the platform. She needs to know:</p>
+    <ul>
+      <li>Are we on schedule? (Really, not the optimistic version)</li>
+      <li>Is the creative vision holding together across two directors?</li>
+      <li>Where are the budget risks before they become overruns?</li>
+    </ul>
+
+    <h3>The Historical Accuracy Tension</h3>
+    <p>Marcos cares deeply about getting Alfonso X right. Elena has to build this world. The tension: historical ambition vs. budget reality. Every "one more scene" from Marcos is a set Elena has to build and Pilar has to budget. But both Marcos and Elena WANT the scene &mdash; the system's job is to make sure the operational reality (budget, timeline) catches up before the artistic commitment becomes an unfunded fact.</p>
+  </div>
+</div>
+
+<!-- Example Misalignments -->
+<div class="section" id="example-misalignments">
+  <div class="section-inner">
+    <h2>Example Misalignments</h2>
+
+    <!-- Misalignment 1 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">1</span>
+        <h3>The Scriptorium Scene (scope creep driven by amor al arte)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>Marcos tells Pilar: "Necesito una escena adicional en el scriptorium &mdash; la escena donde Alfonso dicta las Cantigas. Ya hable con Elena y dice que puede adaptar el set de la biblioteca."</p>
+
+      <p><strong>Pilar's understanding:</strong> Marcos wants a new scene. Elena can handle it with existing sets. Minor adjustment.</p>
+      <p><strong>Elena's actual situation:</strong> Marcos asked her if it was "possible" &mdash; she said "technically yes" because she genuinely wants to see her scriptorium used. But she didn't commit to a timeline or confirm she has budget. She assumed Pilar would allocate resources.</p>
+      <p><strong>The misalignment:</strong> Marcos thinks it's confirmed. Elena thinks it's pending approval. Pilar thinks it's a minor tweak. Nobody validated with anybody. Everyone wants the scene &mdash; nobody checked if it's funded.</p>
+
+      <h4>What the product does (Layer 1 &mdash; individual nudges)</h4>
+      <p>To Elena:</p>
+      <blockquote>"La escena del scriptorium que discutiste con Marcos &mdash; todavia no tiene aprobacion de presupuesto de Pilar. Si se aprueba tarde, tu equipo de arte no tendra tiempo de prepararla como quieres. Quieres alinear con Pilar ahora?"</blockquote>
+      <p>Hits both engines: self-interest (her team's timeline at risk) + amor al arte (the set won't look right if rushed).</p>
+
+      <p>To Marcos:</p>
+      <blockquote>"La escena de las Cantigas que pediste &mdash; Elena dijo que era posible, pero no confirmo timeline ni presupuesto. Si Pilar se entera en set, puede cancelarla. Quieres formalizarlo antes de que eso pase?"</blockquote>
+      <p>Hits both engines: self-interest (the scene might get killed) + amor al arte (he wrote this scene, he wants it made).</p>
+    </div>
+
+    <!-- Misalignment 2 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">2</span>
+        <h3>The Battle of Ecija (schedule cascade from craft obsession)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>Javier tells Tomas on set: "La batalla de Ecija necesita dos dias mas de rodaje. El plano secuencia no esta saliendo con la luz de la tarde."</p>
+      <p><strong>Javier's understanding:</strong> He told the DP they need more time. The DP agreed on set.</p>
+      <p><strong>Tomas's actual commitment:</strong> He said "si, con esa luz si saldria" &mdash; confirming the technical assessment, not committing to the schedule change.</p>
+      <p><strong>Pilar doesn't know yet.</strong> Two extra days in Ecija means the Segovia unit has to delay. The cascade is invisible until Pilar finds out Friday.</p>
+
+      <h4>What the product does (Layer 1)</h4>
+      <p>To Javier:</p>
+      <blockquote>"Los 2 dias extra en Ecija que discutiste con Tomas &mdash; Pilar no lo tiene en el calendario. Si Segovia se retrasa, pierdes la fecha del castillo (los permisos vencen el 15). Tu plano secuencia queda perfecto pero pierdes la locacion de la corte de Alfonso."</blockquote>
+      <p>Hits both: self-interest (loses a location) + amor al arte (the court scenes matter to his episodes too).</p>
+
+      <p>To Pilar:</p>
+      <blockquote>"Javier hablo con Tomas sobre extender Ecija 2 dias. No te ha llegado. Potencial cascada al calendario de Segovia."</blockquote>
+      <p>Hits self-interest directly: Pilar's job is the schedule, and she's about to be blindsided.</p>
+    </div>
+
+    <!-- Misalignment 3 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">3</span>
+        <h3>Lucia's Compliance (structural misalignment &mdash; Layer 2 territory)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>Lucia tells Marcos in a meeting: "Si, puedo mantener el estilo visual de Javier para los episodios 5 al 8."</p>
+      <p><strong>What she said:</strong> Yes.</p>
+      <p><strong>What she felt:</strong> Uncertain. Javier's style is very specific and she's not sure she agrees with all of it. She said yes because pushing back on a veteran director's style in front of the showrunner feels risky for someone on their first major period drama.</p>
+      <p><strong>What surfaces later:</strong> Episodes 5-8 have a noticeably different tone. Sara asks why. Nobody flagged it earlier.</p>
+
+      <h4>What the product does (Layer 1 &mdash; private coaching)</h4>
+      <p>To Lucia:</p>
+      <blockquote>"En la reunion de hoy aceptaste mantener el estilo de Javier. Tus notas del episodio 5 sugieren que quieres hacer cambios en la iluminacion y el ritmo de edicion. Si no lo planteas ahora, la diferencia va a ser obvia en post y va a ser mas dificil de explicar. Quieres pensar en como plantearlo con Marcos?"</blockquote>
+      <p>Hits both: self-interest (she'll be blamed for inconsistency later) + amor al arte (these are HER episodes and she has a vision for them).</p>
+
+      <h4>What the product does (Layer 2 &mdash; exec/consultant signal)</h4>
+      <p>On Sara's dashboard:</p>
+      <blockquote>Relationships: Watch &mdash; Lucia's agreement with Javier's visual style may be compliance, not conviction. Pattern: first-time directors in dual-director setups often defer to veterans at the cost of creative coherence. Recommend facilitated conversation before Ep 5 shoot begins.</blockquote>
+      <p>This is a structural problem. Lucia's incentives (protect her position) are misaligned with the production's interest (creative coherence). No amount of nudging Lucia solves this &mdash; it needs someone with authority to create safety for the conversation.</p>
+    </div>
+
+    <!-- Misalignment 4 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">4</span>
+        <h3>The Email Nobody Read (friction kills communication)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>Raul sends a detailed email to Pilar, Javier, and the DIT (Digital Imaging Technician) about footage labeling problems from the two-unit setup. He lists 6 specific issues: inconsistent color profiles between units, missing slate information, incorrect episode tagging, audio sync problems on the Toledo material, VFX plate issues for the observatory sequences, and missing safety copies.</p>
+      <p>Nobody responds for 2 weeks.</p>
+      <p><strong>Why nobody responded:</strong> Pilar is on set in Burgos. Javier doesn't think post is his problem. The DIT fixed the immediate issues on his end and assumed the rest was sorted.</p>
+      <p><strong>What surfaces later:</strong> 3 months into post-production, Raul's team is spending 40% of their time fixing problems that should have been caught on set. The VFX for the astronomical sequences &mdash; Raul's chance to do something truly original &mdash; are delayed because the plates are unusable. Budget overrun in post: 200K EUR.</p>
+
+      <h4>What the product does (Layer 1)</h4>
+      <p>To Raul (after 3 days of no response):</p>
+      <blockquote>"Tu email sobre los problemas de etiquetado tiene 6 temas abiertos y ninguna respuesta en 3 dias. Si estos no se resuelven en set, tu equipo lo paga en post &mdash; especialmente las placas VFX del observatorio. Quieres escalar a Pilar directamente?"</blockquote>
+      <p>Hits both: self-interest (his timeline and budget) + amor al arte (the observatory VFX he's been dreaming about).</p>
+
+      <p>To Pilar (proactive):</p>
+      <blockquote>"Raul envio un email hace 3 dias con 6 problemas de material entre las dos unidades. Nadie ha respondido. Problemas de etiquetado no resueltos en set cuestan 3-5x en post."</blockquote>
+      <p>Hits self-interest: Pilar is the budget guardian.</p>
+
+      <h4>What the product does (Layer 2 &mdash; if pattern persists)</h4>
+      <p>On Sara's dashboard:</p>
+      <blockquote>Processes: Warning &mdash; Post-production issues raised via email are going unacknowledged (avg response time: 11 days). Cross-department communication between on-set and post teams is sparse. Pattern seen in troubled productions: issues fester 4-6 weeks before being addressed. Recommend: establish weekly post check-in or change communication channel.</blockquote>
+    </div>
+
+    <!-- Misalignment 5 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">5</span>
+        <h3>The Unit Drift (systemic &mdash; pure Layer 2)</h3>
+      </div>
+
+      <h4>What develops over weeks 3-6</h4>
+      <p>Toledo unit (Javier's crew) and Madrid studio unit start developing separate identities. In messages:</p>
+      <ul>
+        <li>Toledo crew refers to "lo de Madrid" and "el equipo de estudio"</li>
+        <li>Madrid crew refers to "los de Toledo" and "la unidad de exteriores"</li>
+        <li>Pilar is the only bridge and she's exhausted</li>
+        <li>Creative decisions in Toledo don't reach Madrid and vice versa</li>
+        <li>Costume continuity starts to drift</li>
+        <li>Blame transfer appears: when Toledo footage has continuity issues, it's "culpa de los de Madrid que no mandaron las referencias." When Madrid studio falls behind, it's "porque Toledo se llevo todos los recursos." Both sides have partial truth. Neither is solving the problem &mdash; they're transferring it. (From real data: <em>"Todos se quejan del contrario, pero por diferentes motivos. Nadie empatiza, cada uno tira para su lado."</em>)</li>
+      </ul>
+      <p><strong>No individual nudge can fix this.</strong> Everyone's acting rationally within their unit. The problem is structural &mdash; two groups that should be one team are becoming two teams.</p>
+
+      <h4>What the product does (Layer 2 only)</h4>
+      <p>On Sara's dashboard:</p>
+      <blockquote>Team cohesion: Drifting &mdash; Communication between Toledo and Madrid units is increasingly siloed. Language patterns shifting from "the team" to "us/them." Cross-unit coordination declining since week 3. Operational agreement "we coordinate daily between units" has no evidence of being practiced since week 4. Recommend: joint production meeting or consultant intervention before the gap becomes cultural.</blockquote>
+      <p>This is where the human consultant earns their value. The system detected the drift early enough to intervene before it calcifies.</p>
+    </div>
+
+    <!-- Misalignment 6 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">6</span>
+        <h3>The Blame Spiral (communication shifts from solving to blaming)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>The Segovia location shoot goes over budget by 45K EUR. The permits for the castle courtyard expired before Javier's unit could finish, because the Ecija extension pushed everything back. Now three people are telling three different stories:</p>
+      <ul>
+        <li>Javier to Marcos: <em>"Pilar no me aviso que los permisos vencian. Si me lo hubiera dicho, habria ajustado el plan."</em></li>
+        <li>Pilar to Sara: <em>"Javier tomo la decision de extender Ecija sin consultarme. Yo no puedo controlar lo que no se."</em></li>
+        <li>Tomas to Elena: <em>"Yo le dije a Javier que con esa luz saldria, no que se quedara dos dias mas. No es mi problema."</em></li>
+      </ul>
+      <p>Nobody is lying. Everyone has a partial truth. But the communication has shifted from "how do we fix this?" to "whose fault is this?" &mdash; and once that shift happens, information stops flowing because anything you say can be used against you.</p>
+
+      <h4>What the system sees (Layer 2 &mdash; pattern detection)</h4>
+      <p>The system tracks communication tone and direction. It detects:</p>
+      <ul>
+        <li>Blame attribution language increasing across 3 people in 48 hours</li>
+        <li>Information flow between Javier and Pilar dropped 60% since the Segovia overrun</li>
+        <li>Tomas stopped responding to group threads (withdrawal pattern)</li>
+        <li>The team's operating agreement says "we flag issues early &mdash; a problem shared in week 2 is a conversation, in week 6 it's a crisis." This agreement is actively being violated &mdash; people are withholding information to protect themselves.</li>
+      </ul>
+      <p>On the consultant's dashboard:</p>
+      <blockquote>Relationships: Escalating &mdash; Blame attribution pattern triggered by Segovia overrun. Three-way breakdown: Javier-Pilar communication severed, Tomas withdrawing. Operating agreement on early flagging not practiced. This will compound &mdash; once people stop sharing information to protect themselves, every subsequent misalignment gets worse. Recommend: facilitated session within 48 hours. Do not let this calcify.</blockquote>
+      <p><strong>Why this matters for the demo:</strong> The audience has lived this. They know the moment when a production goes from "we have a problem" to "whose fault is this." The system doesn't prevent the blame &mdash; it catches the SHIFT from problem-solving to blame-transfer early enough to intervene before people stop talking to each other entirely.</p>
+    </div>
+
+    <!-- Misalignment 7 -->
+    <div class="misalignment">
+      <div class="misalignment-header">
+        <span class="misalignment-number">7</span>
+        <h3>The Escalation That Works (Layer 1 &rarr; Layer 2 handoff)</h3>
+      </div>
+
+      <h4>What happened</h4>
+      <p>In week 3, Elena got the nudge about the scriptorium scene (Scene 1). She saw it. She dismissed it &mdash; she's on set in Toledo, it's 6am, she's dealing with a medieval market set that needs to be ready by noon. The nudge felt like one more thing.</p>
+      <p>Two days later, she still hasn't aligned with Pilar. Marcos has already told the director of the Cantigas episode to prep the scene. The assumption is hardening into a commitment.</p>
+
+      <h4>What the system does</h4>
+      <p><strong>Day 1:</strong> Nudge to Elena (Layer 1). Dismissed.</p>
+      <p><strong>Day 3:</strong> The system doesn't re-nudge Elena &mdash; that would be nagging. Instead, it escalates the signal:</p>
+
+      <p>To Pilar:</p>
+      <blockquote>"La escena del scriptorium sigue sin aprobacion de presupuesto. Marcos ya hablo con el director del episodio 3. Si no se formaliza esta semana, el equipo de Elena va a empezar a preparar un set sin partida presupuestaria."</blockquote>
+
+      <p>To Sara's dashboard (if the pattern persists past day 5):</p>
+      <blockquote>Processes: Active &mdash; Unvalidated scope commitment (scriptorium scene) has been live for 5 days without budget approval. Follows pattern: showrunner bypasses line producer on scope decisions. Seen in 2 of last 3 productions.</blockquote>
+
+      <p><strong>The design principle:</strong> Layer 1 is a suggestion. If ignored, the system doesn't insist &mdash; it moves the signal to the person who has the authority and context to act. The escalation isn't punitive. Nobody gets called out for dismissing a nudge. The problem simply surfaces at the right altitude.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Why This Works -->
+<div class="section" id="why-this-works">
+  <div class="section-inner">
+    <h2>Why This Works: Two Layers</h2>
+
+    <div class="layer-card">
+      <span class="layer-label">Layer 1</span>
+      <h3>Self-interest + amor al arte (individual nudges, scalable)</h3>
+      <p>The system makes it <strong>effortless to do what you already want to do.</strong> These are passionate people who care about the work. They fail to communicate not because they don't care but because they're busy making art. The nudge removes friction:</p>
+      <ul>
+        <li>30 seconds to clarify a commitment</li>
+        <li>One tap to escalate an unread email</li>
+        <li>A private prompt to surface discomfort before it becomes a crisis</li>
+      </ul>
+      <p>Nobody is asked to be more conscious or be a better person. The system tells you: <strong>the thing you care about is at risk, and here's a 30-second action to protect it.</strong></p>
+      <p>This catches ~80% of problems.</p>
+    </div>
+
+    <div class="layer-card">
+      <span class="layer-label">Layer 2</span>
+      <h3>Structural signals (exec/consultant dashboard, targeted intervention)</h3>
+      <p>When individual incentives are misaligned or the problem is systemic:</p>
+      <ul>
+        <li>Lucia's compliance: her incentive (protect position) conflicts with the production's need (creative coherence)</li>
+        <li>Unit drift: everyone acts rationally within their unit, but the whole suffers</li>
+        <li>Escalation culture: people CC the boss to protect themselves, creating bottlenecks</li>
+      </ul>
+      <p>These can't be nudged away. They need intervention &mdash; a facilitated conversation, a process change, a role clarification. The dashboard tells the consultant <strong>exactly where and why</strong>, grounded in data, not guesswork.</p>
+      <p><strong>The pitch:</strong> Most problems get caught cheap (Layer 1). The ones that don't get caught are surfaced precisely (Layer 2). The consultant isn't spending 3 days figuring out what's wrong &mdash; they're spending 3 hours on the right intervention.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Financial Context -->
+<div class="section" id="financial-context">
+  <div class="section-inner">
+    <h2>Financial Context</h2>
+    <p>From real Clapperboard/IZEN data:</p>
+    <ul>
+      <li>Troubled productions trend <strong>15-22% over budget</strong> due to team dysfunction</li>
+      <li>On a 15M EUR production like Alfonso, that's <strong>2.2-3.3M EUR</strong> in preventable overruns</li>
+      <li>Average time to address issues in troubled productions: <strong>4-6 weeks</strong> (by which time the cascade is unstoppable)</li>
+      <li>Investment in team alignment per production: minimal (onboarding + system). Return: catching 2-3 misalignments early in the first 3 weeks saves six figures.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Language Notes -->
+<div class="section" id="language-notes">
+  <div class="section-inner">
+    <h2>Language Notes</h2>
+    <p>The team speaks <strong>Spanish</strong> (Castilian). In production environments:</p>
+    <ul>
+      <li>Meetings are fast, loud, overlapping</li>
+      <li>Commitments are verbal, often made in hallways or on set, not in formal meetings</li>
+      <li>"Ya hable con..." is how decisions get communicated &mdash; through chains, not broadcasts</li>
+      <li>"Si" can mean "yes," "I heard you," "I'll think about it," or "I don't want to argue"</li>
+      <li>The line producer is the operational spine &mdash; everything flows through them, but they're always overwhelmed</li>
+      <li>Directors have outsized informal authority &mdash; when they say something on set, people act on it even without formal approval</li>
+      <li>The showrunner's creative requests carry moral authority ("esto es por la obra") that makes it hard to push back on budget grounds</li>
+      <li>People care deeply about the work. The friction isn't motivation &mdash; it's that caring about your piece doesn't automatically mean you see how it affects everyone else's piece</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Sources -->
+<div class="section" id="sources">
+  <div class="section-inner">
+    <h2>Sources</h2>
+    <p><em>Built from: El Cid production patterns (200+ crew, two units, 4,000m2 sets, 6 directors), iZen company structure (Sara as CEO, Zebra Producciones as premium label), Clapperboard/IZEN co-production dysfunction data (email analysis, budget impact), Axialent HPT intervention findings (Oct-Nov 2025: 10 interviews, CEO micro-sessions, production crew interviews with Jesus Diaz and Pere Agullo), and typical Spanish historical drama production dynamics.</em></p>
+    <ul>
+      <li><a href="https://zebraproducciones.com/en/comienza-el-rodaje-en-espana-de-la-serie-amazon-original-el-cid/" target="_blank">Zebra Producciones &mdash; El Cid filming</a></li>
+      <li><a href="https://www.c21media.net/inside-izens-global-ambition-under-ceo-sara-fernandez-velasco/" target="_blank">iZen company structure &mdash; C21 Media</a></li>
+      <li><a href="https://variety.com/2022/tv/global/el-cid-jose-velasco-honored-conecta-fiction-1235300418/" target="_blank">Variety &mdash; Jose Velasco honored</a></li>
+      <li><a href="https://izen.tv/production/el-cid.php" target="_blank">iZen Key Show &mdash; El Cid</a></li>
+      <li><a href="https://globalfilmz.com/list-tv-show-production-crew-roles/" target="_blank">TV production crew roles</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Stoic &mdash; PLIA Teams | <a href="index.html">Back to Hub</a></p>
+</div>
+
+</body>
+</html>

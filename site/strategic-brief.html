@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Brief &mdash; Stoic-IZEN | Stoic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+      --section-alt: #fafafa;
+      --max-width: 700px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--base-white);
+    }
+
+    /* Top Bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--base-white);
+      border-bottom: 3px solid var(--stoic-yellow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat Alternates', sans-serif;
+    }
+    .top-bar .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      color: var(--black);
+    }
+    .top-bar .doc-label {
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Back link */
+    .back-link {
+      display: block;
+      margin-top: 70px;
+      padding: 0.75rem 2rem;
+      font-size: 0.9rem;
+      color: var(--stoic-red);
+      text-decoration: none;
+      font-weight: 500;
+      max-width: var(--max-width);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem 2.5rem;
+      background: var(--base-white);
+    }
+    .hero h1 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+      color: var(--black);
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+    .hero .meta {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .hero .meta span {
+      margin: 0 0.75rem;
+    }
+
+    /* Table of Contents */
+    .toc {
+      max-width: var(--max-width);
+      margin: 0 auto 2rem;
+      padding: 1.5rem 2rem;
+      background: var(--section-alt);
+      border-radius: 8px;
+      border-left: 4px solid var(--stoic-yellow);
+    }
+    .toc h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--black);
+    }
+    .toc ol {
+      list-style-position: inside;
+      padding-left: 0;
+    }
+    .toc li {
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .toc a {
+      color: var(--stoic-red);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Sections */
+    .section {
+      padding: 3rem 2rem;
+    }
+    .section:nth-child(even) {
+      background: var(--section-alt);
+    }
+    .section:nth-child(odd) {
+      background: var(--base-white);
+    }
+    .section-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--black);
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--stoic-yellow);
+    }
+    h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--stoic-red);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    h4 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p { margin-bottom: 1rem; }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.4rem; }
+
+    strong { font-weight: 700; }
+
+    blockquote {
+      border-left: 4px solid var(--stoic-red);
+      padding: 1rem 1.5rem;
+      background: var(--section-alt);
+      font-style: italic;
+      margin: 1.25rem 0;
+      border-radius: 0 6px 6px 0;
+      color: var(--text-secondary);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      max-width: var(--max-width);
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.95rem;
+    }
+    thead th {
+      background: var(--black);
+      color: var(--base-white);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    tbody td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--stoic-gray);
+    }
+    tbody tr:hover { background: #f5f5f5; }
+
+    /* Player Cards */
+    .player-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .player-card {
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.25rem;
+      background: var(--base-white);
+      border-top: 4px solid var(--stoic-yellow);
+    }
+    .player-card h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: var(--stoic-red);
+    }
+    .player-card ul {
+      padding-left: 1.25rem;
+      font-size: 0.92rem;
+    }
+    .player-card li {
+      margin-bottom: 0.3rem;
+    }
+
+    /* Problem Dimensions */
+    .dimension-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .dimension-card {
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      border-left: 5px solid;
+    }
+    .dimension-card.it { border-color: #2196F3; background: #e8f4fd; }
+    .dimension-card.we { border-color: #4CAF50; background: #edf7ee; }
+    .dimension-card.personal { border-color: #FF9800; background: #fff8e8; }
+    .dimension-card h4 {
+      margin-top: 0;
+      font-size: 1.05rem;
+    }
+    .dimension-card ul {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+
+    /* Risk Cards */
+    .risk-card {
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--base-white);
+      border-left: 4px solid var(--stoic-red);
+    }
+    .risk-card h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    .risk-card .risk-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Checkmark items */
+    .check-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .check-list li {
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.4rem;
+      background: #edf7ee;
+      border-radius: 6px;
+      border-left: 4px solid #4CAF50;
+      font-size: 0.95rem;
+    }
+    .check-list li::before {
+      content: "\2705 ";
+    }
+
+    /* Task list (open questions) */
+    .task-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .task-list li {
+      padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+      margin-bottom: 0.35rem;
+      position: relative;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+    .task-list li::before {
+      content: "";
+      position: absolute;
+      left: 0.5rem;
+      top: 0.65rem;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--text-muted);
+      border-radius: 3px;
+      background: var(--base-white);
+    }
+
+    /* Deliverable option cards */
+    .option-card {
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--base-white);
+    }
+    .option-card.recommended {
+      border-color: var(--stoic-yellow);
+      border-width: 2px;
+      background: #fffde6;
+    }
+    .option-card h4 { margin-top: 0; }
+
+    /* Narrative blockquote */
+    .narrative-item {
+      margin-bottom: 0.75rem;
+    }
+    .narrative-item strong {
+      color: var(--stoic-red);
+    }
+
+    /* Pitch acts */
+    .pitch-act {
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      background: var(--base-white);
+      border-top: 3px solid var(--stoic-yellow);
+    }
+    .pitch-act h3 { margin-top: 0; }
+    .pitch-act .act-tagline {
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--stoic-gray);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .player-cards { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .top-bar { padding: 0.5rem 1rem; }
+      .section { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">Stoic</div>
+    <div class="doc-label">STRATEGIC BRIEF</div>
+  </div>
+
+  <!-- Back Link -->
+  <a href="index.html" class="back-link">&larr; Back to Hub</a>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Stoic-IZEN Strategic Brief</h1>
+    <p class="subtitle">AI-Powered Team Effectiveness in TV Production</p>
+    <p class="meta">
+      <span>October 2025</span> &middot;
+      <span>Pre-POC Development Phase</span> &middot;
+      <span>Internal Use</span>
+    </p>
+  </div>
+
+  <!-- Table of Contents -->
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#executive-summary">Executive Summary</a></li>
+      <li><a href="#the-players">The Players</a></li>
+      <li><a href="#the-problem">The Problem (Izen's Perspective)</a></li>
+      <li><a href="#the-opportunity">The Opportunity</a></li>
+      <li><a href="#poc-strategy">The POC Strategy</a></li>
+      <li><a href="#pitch-structure">The Pitch Structure</a></li>
+      <li><a href="#investment-proposition">The Investment Proposition</a></li>
+      <li><a href="#critical-success-factors">Critical Success Factors</a></li>
+      <li><a href="#key-risks">Key Risks &amp; Mitigation</a></li>
+      <li><a href="#open-questions">Open Questions</a></li>
+      <li><a href="#success-metrics">Success Metrics</a></li>
+      <li><a href="#next-steps">Next Steps</a></li>
+      <li><a href="#narrative-arc">The Narrative Arc</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+    </ol>
+  </nav>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section" id="executive-summary">
+    <div class="section-inner">
+      <h2>Executive Summary</h2>
+
+      <h3>The Opportunity</h3>
+      <p>Secure strategic investment from Izen Group while solving their expensive production dysfunction problem, positioning Stoic as the AI-enabled solution for team effectiveness in the TV/film production industry.</p>
+
+      <h3>The Play</h3>
+      <ol>
+        <li>Build AI POC analyzing Izen's past production communications</li>
+        <li>Demonstrate how invisible team patterns predict budget failures</li>
+        <li>Present to President Jos&eacute; Velasco as both solution AND investment opportunity</li>
+        <li>Secure investment + form joint venture to scale industry-wide</li>
+      </ol>
+
+      <h3>The Stakes</h3>
+      <ul>
+        <li><strong>For Izen:</strong> Save &euro;750K+ annually in production overruns</li>
+        <li><strong>For Stoic:</strong> Secure investor + proof point + showcase client + market entry</li>
+        <li><strong>For Industry:</strong> Pioneer AI-augmented consulting in project-based creative work</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THE PLAYERS -->
+  <div class="section" id="the-players">
+    <div class="section-inner">
+      <h2>The Players</h2>
+
+      <div class="player-cards">
+        <div class="player-card">
+          <h3>Stoic (Us)</h3>
+          <ul>
+            <li><strong>What:</strong> AI subsidiary of Axialent developing leadership effectiveness technology</li>
+            <li><strong>Need:</strong> Strategic investor to scale + real-world validation</li>
+            <li><strong>Opportunity:</strong> Izen as investor, partner, and showcase client</li>
+            <li><strong>Product:</strong> &ldquo;Pattern Detective&rdquo; &mdash; AI analysis of team communication patterns</li>
+          </ul>
+        </div>
+
+        <div class="player-card">
+          <h3>Axialent</h3>
+          <ul>
+            <li><strong>What:</strong> Organizational culture consultancy (parent company)</li>
+            <li><strong>Method:</strong> Human-facilitated interventions (&ldquo;analogic&rdquo;)</li>
+            <li><strong>Current:</strong> Proposed 3-month program for Izen (&euro;120K+)</li>
+            <li><strong>Role:</strong> Delivers human interventions complemented by Stoic technology</li>
+          </ul>
+        </div>
+
+        <div class="player-card">
+          <h3>Izen Group</h3>
+          <ul>
+            <li><strong>What:</strong> Spanish TV production company</li>
+            <li><strong>Problem:</strong> Systematic budget overruns on international co-productions (UK partnerships)</li>
+            <li><strong>Cost:</strong> &euro;750K+ annually in preventable failures</li>
+            <li><strong>Structure:</strong> Jos&eacute; Velasco (President/Main Shareholder) + Sara Fern&aacute;ndez (CEO)</li>
+          </ul>
+        </div>
+
+        <div class="player-card">
+          <h3>Clapperboard Studios</h3>
+          <ul>
+            <li><strong>What:</strong> UK production partner (multiple co-productions with Izen)</li>
+            <li><strong>Dynamic:</strong> Troubled UK-Spain collaborations, mutual blame patterns</li>
+            <li><strong>Context:</strong> Not our client, but part of the dysfunction system</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="section" id="the-problem">
+    <div class="section-inner">
+      <h2>The Problem (Izen's Perspective)</h2>
+
+      <h3>Surface Problem</h3>
+      <blockquote>&ldquo;Our UK partnerships keep going over budget. Cultural differences, communication breakdowns, their difficult work style.&rdquo;</blockquote>
+
+      <h3>Actual Problem (What Data Shows)</h3>
+      <p>Systematic dysfunction across three dimensions:</p>
+
+      <div class="dimension-grid">
+        <div class="dimension-card it">
+          <h4>1. &ldquo;IT&rdquo; &mdash; Systems / Task (Impersonal)</h4>
+          <ul>
+            <li>No coordinated work methodology between teams</li>
+            <li>Unclear roles and responsibilities</li>
+            <li>Insufficient preparation time</li>
+            <li>Head office disconnected from production crews</li>
+            <li>Learning from past failures not systematized</li>
+          </ul>
+        </div>
+        <div class="dimension-card we">
+          <h4>2. &ldquo;WE&rdquo; &mdash; Relationships (Interpersonal)</h4>
+          <ul>
+            <li>Poor communication (unclear requests, no inquiry)</li>
+            <li>Conflicts avoided rather than resolved</li>
+            <li>Lack of team cohesion</li>
+            <li>Cultural/language barriers unaddressed</li>
+            <li>Us-vs-them dynamics (Spain vs UK)</li>
+          </ul>
+        </div>
+        <div class="dimension-card personal">
+          <h4>3. &ldquo;I&rdquo; &mdash; Leadership (Personal)</h4>
+          <ul>
+            <li>Leadership distant and evasive</li>
+            <li>Executives avoid decisions, seek scapegoats</li>
+            <li>Variable commitment (staff vs contractors)</li>
+            <li>Blame culture vs accountability culture</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>The Pattern (From Email Analysis)</h3>
+      <p>Based on preliminary analysis and Axialent's diagnostic interviews:</p>
+      <ul>
+        <li>Trust starts high, collapses around Week 3</li>
+        <li>Defensive communication spikes</li>
+        <li>Escalation culture (problems go UP not ACROSS)</li>
+        <li>Silo behavior (internal over cross-team communication)</li>
+        <li>Budget overruns become inevitable by Week 5&ndash;6</li>
+      </ul>
+
+      <h3>Financial Impact</h3>
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Troubled productions over budget</td><td>15&ndash;22%</td></tr>
+          <tr><td>Average overrun per production</td><td>&euro;65K &ndash; &euro;90K</td></tr>
+          <tr><td>Annual bleeding</td><td>~&euro;750K+</td></tr>
+          <tr><td>Pattern type</td><td>Systematic, not random</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- THE OPPORTUNITY -->
+  <div class="section" id="the-opportunity">
+    <div class="section-inner">
+      <h2>The Opportunity</h2>
+
+      <h3>For Izen</h3>
+      <h4>Immediate ROI</h4>
+      <ul>
+        <li>Prevent budget overruns (&euro;750K+ annual savings)</li>
+        <li>Early warning system for troubled productions</li>
+        <li>Data-driven team interventions</li>
+        <li>Competitive advantage in collaboration capability</li>
+      </ul>
+      <h4>Strategic Value</h4>
+      <ul>
+        <li>Ground floor investment in AI consultancy</li>
+        <li>Showcase client for emerging technology</li>
+        <li>Industry leadership position</li>
+        <li>JV participation in scaling solution</li>
+      </ul>
+
+      <h3>For Stoic</h3>
+      <h4>Validation</h4>
+      <ul>
+        <li>Real-world proof point with actual financial impact</li>
+        <li>Showcase client in specific vertical (TV/film production)</li>
+        <li>Bridge credibility gap (concept &rarr; working solution)</li>
+      </ul>
+      <h4>Investment</h4>
+      <ul>
+        <li>Strategic investor with industry expertise</li>
+        <li>Patient capital from operator who understands the pain</li>
+        <li>Natural partnership dynamics (customer + investor alignment)</li>
+      </ul>
+      <h4>Market Entry</h4>
+      <ul>
+        <li>TV/film production as beachhead market</li>
+        <li>Velasco's network for distribution</li>
+        <li>Proof of concept for broader project-based industries</li>
+        <li>Complement to Axialent's consulting practice</li>
+      </ul>
+
+      <h3>For the Industry</h3>
+      <h4>Transformation</h4>
+      <ul>
+        <li>First AI-enabled team effectiveness solution for productions</li>
+        <li>Shift from reactive firefighting to predictive prevention</li>
+        <li>Professionalize an industry known for dysfunction</li>
+        <li>Set new standard for international co-productions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THE POC STRATEGY -->
+  <div class="section" id="poc-strategy">
+    <div class="section-inner">
+      <h2>The POC Strategy</h2>
+
+      <h3>Objective</h3>
+      <p>Convince Jos&eacute; Velasco that:</p>
+      <ol>
+        <li>Izen has an expensive invisible problem (consciousness)</li>
+        <li>AI can make patterns visible and actionable (capability)</li>
+        <li>Stoic represents an investment opportunity (strategic value)</li>
+        <li>Partnership/JV makes sense for scaling (business model)</li>
+      </ol>
+
+      <h3>Approach: Forensic Analysis</h3>
+
+      <h4>Phase 1: Data Gathering (Current &mdash; Monday meeting)</h4>
+      <ul>
+        <li>Determine email access (Izen only vs Izen + Clapperboard)</li>
+        <li>Identify available productions for analysis</li>
+        <li>Secure budget/outcome data</li>
+        <li>Define data scope and limitations</li>
+      </ul>
+
+      <h4>Phase 2: Pattern Analysis (2&ndash;4 weeks)</h4>
+      <ul>
+        <li>Analyze past productions using Five Behaviors framework:
+          <ul>
+            <li>Trust (vulnerability vs defensiveness)</li>
+            <li>Conflict (healthy debate vs avoidance/escalation)</li>
+            <li>Commitment (clear decisions vs revisiting)</li>
+            <li>Accountability (peer-to-peer vs triangulation)</li>
+            <li>Results (team focus vs silo behavior)</li>
+          </ul>
+        </li>
+        <li>Compare successful vs troubled productions</li>
+        <li>Correlate communication patterns to financial outcomes</li>
+        <li>Identify predictive indicators (Week 3 collapse, early warnings)</li>
+      </ul>
+
+      <h4>Phase 3: The Reveal (Presentation to Velasco + Sara)</h4>
+      <p>Create compelling narrative:</p>
+      <ol>
+        <li><strong>&ldquo;Here's what's killing your margins&rdquo;</strong> (pattern visualization)</li>
+        <li><strong>&ldquo;Here's how it happens&rdquo;</strong> (the systematic collapse)</li>
+        <li><strong>&ldquo;Here's what it's costing you&rdquo;</strong> (financial analysis)</li>
+        <li><strong>&ldquo;Here's your contribution&rdquo;</strong> (not just blame UK)</li>
+        <li><strong>&ldquo;Here's the solution&rdquo;</strong> (technology + human interventions)</li>
+        <li><strong>&ldquo;Here's the opportunity&rdquo;</strong> (investment pitch)</li>
+      </ol>
+
+      <h3>Deliverable Options</h3>
+
+      <div class="option-card">
+        <h4>Option A: Minimal POC (Fastest)</h4>
+        <ul>
+          <li>Analyze limited email sample (10&ndash;50 emails)</li>
+          <li>Demonstrate pattern detection works</li>
+          <li>Show proof of concept</li>
+          <li>Create curiosity for deeper analysis</li>
+          <li><strong>Timeline:</strong> 1&ndash;2 weeks</li>
+        </ul>
+      </div>
+
+      <div class="option-card recommended">
+        <h4>Option B: Credible POC (Recommended)</h4>
+        <ul>
+          <li>Analyze 2&ndash;3 complete productions</li>
+          <li>Compare successful vs troubled</li>
+          <li>Show correlation to financial outcomes</li>
+          <li>Demonstrate baseline + predictive capability</li>
+          <li><strong>Timeline:</strong> 3&ndash;4 weeks</li>
+        </ul>
+      </div>
+
+      <div class="option-card">
+        <h4>Option C: Full Experience (Most Convincing)</h4>
+        <ul>
+          <li>Analyze 5+ productions comprehensively</li>
+          <li>Real-time monitoring of current production</li>
+          <li>Dashboard with live metrics</li>
+          <li>Full &ldquo;Pattern Detective&rdquo; demonstration</li>
+          <li><strong>Timeline:</strong> 6&ndash;8 weeks</li>
+        </ul>
+      </div>
+
+      <p><strong>Recommendation:</strong> Start with Option B, design for expansion to Option C.</p>
+    </div>
+  </div>
+
+  <!-- THE PITCH STRUCTURE -->
+  <div class="section" id="pitch-structure">
+    <div class="section-inner">
+      <h2>The Pitch Structure</h2>
+
+      <div class="pitch-act">
+        <h3>Act 1: The Problem is Real and Expensive</h3>
+        <p class="act-tagline">&ldquo;You're bleeding money and can't see why&rdquo;</p>
+        <ul>
+          <li>Pattern visualization showing systematic collapse</li>
+          <li>Financial correlation (bad behaviors &rarr; budget overruns)</li>
+          <li>It's not &ldquo;UK is difficult&rdquo; &mdash; it's &ldquo;we have a system that produces failure&rdquo;</li>
+          <li>Evidence from their own data (undeniable)</li>
+        </ul>
+      </div>
+
+      <div class="pitch-act">
+        <h3>Act 2: The Solution is Proven and Scalable</h3>
+        <p class="act-tagline">&ldquo;Technology + humans together solve this&rdquo;</p>
+        <ul>
+          <li>AI reveals patterns invisible to participants</li>
+          <li>Early warning enables timely intervention</li>
+          <li>Axialent's human work becomes precisely targeted</li>
+          <li>Your successful productions prove it's possible</li>
+          <li>Prevention vs firefighting economics</li>
+        </ul>
+      </div>
+
+      <div class="pitch-act">
+        <h3>Act 3: The Opportunity is Strategic</h3>
+        <p class="act-tagline">&ldquo;This is bigger than Izen &mdash; and you can be part of it&rdquo;</p>
+        <ul>
+          <li>Industry-wide problem worth solving</li>
+          <li>First-mover advantage in AI-augmented consulting</li>
+          <li>Izen as investor + partner + showcase</li>
+          <li>JV structure to scale solution</li>
+          <li>Transform from customer to co-creator</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE INVESTMENT PROPOSITION -->
+  <div class="section" id="investment-proposition">
+    <div class="section-inner">
+      <h2>The Investment Proposition</h2>
+
+      <h3>What Velasco Gets</h3>
+
+      <h4>Direct Value</h4>
+      <ul>
+        <li>Save &euro;750K+ annually on Izen productions</li>
+        <li>Competitive advantage in team effectiveness</li>
+        <li>Early intervention capability</li>
+        <li>Industry leadership positioning</li>
+      </ul>
+
+      <h4>Investment Returns</h4>
+      <ul>
+        <li>Equity stake in Stoic (terms TBD)</li>
+        <li>Participation in scaling proven solution</li>
+        <li>Access to Axialent partnership network</li>
+        <li>Exit potential as AI consulting scales</li>
+      </ul>
+
+      <h4>Strategic Position</h4>
+      <ul>
+        <li>Ground floor in AI transformation of production industry</li>
+        <li>Influence over product development (Izen is showcase)</li>
+        <li>Network effects (other producers want what Izen has)</li>
+        <li>Validation from being &ldquo;the first&rdquo;</li>
+      </ul>
+
+      <h3>What Stoic Gets</h3>
+
+      <h4>Capital</h4>
+      <ul>
+        <li>Investment to scale technology development</li>
+        <li>Runway for product refinement</li>
+        <li>Resources for market development</li>
+      </ul>
+
+      <h4>Validation</h4>
+      <ul>
+        <li>Proof point with real financial impact</li>
+        <li>Industry expertise from operator-investor</li>
+        <li>Customer testimonial + case study</li>
+        <li>Reference for other prospects</li>
+      </ul>
+
+      <h4>Partnership</h4>
+      <ul>
+        <li>JV structure for go-to-market</li>
+        <li>Distribution through Velasco's network</li>
+        <li>Inside access to production industry</li>
+        <li>Feedback loop for product development</li>
+      </ul>
+
+      <h3>The JV Structure (Conceptual)</h3>
+      <p><strong>Stoic + Axialent + Izen Group</strong></p>
+      <ul>
+        <li>Stoic provides technology platform</li>
+        <li>Axialent provides consulting methodology</li>
+        <li>Izen provides industry access + capital</li>
+        <li>Shared economics on new customer acquisition</li>
+        <li>Exclusive showcase rights for Izen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CRITICAL SUCCESS FACTORS -->
+  <div class="section" id="critical-success-factors">
+    <div class="section-inner">
+      <h2>Critical Success Factors</h2>
+
+      <h3>For POC to Work</h3>
+
+      <ul class="check-list">
+        <li><strong>Use IZEN's actual data</strong> (not hypothetical examples) &mdash; Must analyze real productions, show their actual patterns, use their own words/emails. Undeniable because it's theirs.</li>
+        <li><strong>Show THEIR contribution</strong> (not just blame UK) &mdash; Both sides contribute to dysfunction. System problem, not personality problem. Empowering vs blaming frame. &ldquo;Here's what you can control.&rdquo;</li>
+        <li><strong>Financially framed</strong> (speak Velasco's language) &mdash; Connect patterns to money lost. Show ROI clearly. Compare investment cost to savings. Make business case, not therapy case.</li>
+        <li><strong>Create urgency</strong> (problem is NOW) &mdash; Current productions at risk. Money bleeding RIGHT NOW. Window for intervention closing. Cost of delay is real.</li>
+        <li><strong>Show path forward</strong> (solution + opportunity) &mdash; Not just problem diagnosis. Technology enables new approach. Human + AI together. Bigger than Izen alone.</li>
+      </ul>
+
+      <h3>The Delicate Balance</h3>
+
+      <h4>Must achieve:</h4>
+      <ul>
+        <li>Show serious problem (create urgency)</li>
+        <li>Prove technology works (build credibility)</li>
+        <li>Position as opportunity (not just sale)</li>
+        <li>Ask for investment (the real ask)</li>
+      </ul>
+
+      <h4>Without:</h4>
+      <ul>
+        <li>Making them feel incompetent (defensive response)</li>
+        <li>Overpromising AI magic (credibility loss)</li>
+        <li>Seeming opportunistic (trust loss)</li>
+        <li>Creating &ldquo;if so good, why need money?&rdquo; paradox</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- KEY RISKS & MITIGATION -->
+  <div class="section" id="key-risks">
+    <div class="section-inner">
+      <h2>Key Risks &amp; Mitigation</h2>
+
+      <div class="risk-card">
+        <p class="risk-label">Risk 1</p>
+        <h3>Insufficient Data</h3>
+        <p><strong>Risk:</strong> Not enough email volume or productions to prove patterns</p>
+        <p><strong>Impact:</strong> POC seems like cherry-picked example, not systematic proof</p>
+        <p><strong>Mitigation:</strong></p>
+        <ul>
+          <li>Transparent about data limitations</li>
+          <li>Frame as &ldquo;proof of concept&rdquo; not &ldquo;final answer&rdquo;</li>
+          <li>Offer deeper analysis contingent on initial interest</li>
+          <li>Use Axialent interview data to supplement</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <p class="risk-label">Risk 2</p>
+        <h3>Defensive Response</h3>
+        <p><strong>Risk:</strong> Velasco/Sara reject mirror (&ldquo;that's not us&rdquo;)</p>
+        <p><strong>Impact:</strong> Kill the conversation before investment discussion</p>
+        <p><strong>Mitigation:</strong></p>
+        <ul>
+          <li>Lead with successful productions (they can do this)</li>
+          <li>Frame as system problem (both sides contribute)</li>
+          <li>Use empowering language (&ldquo;here's what you control&rdquo;)</li>
+          <li>Avoid blame, emphasize opportunity</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <p class="risk-label">Risk 3</p>
+        <h3>&ldquo;Just Fix It&rdquo; vs Investment</h3>
+        <p><strong>Risk:</strong> They want consulting service, not investment opportunity</p>
+        <p><strong>Impact:</strong> Become vendor not partner, lose strategic positioning</p>
+        <p><strong>Mitigation:</strong></p>
+        <ul>
+          <li>Position as bigger than Izen problem (industry transformation)</li>
+          <li>Show limited capacity (can't scale without investment)</li>
+          <li>Frame JV as win-win (they get showcase + returns)</li>
+          <li>Make investment attractive on its own merits</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <p class="risk-label">Risk 4</p>
+        <h3>Technology Not Ready</h3>
+        <p><strong>Risk:</strong> AI doesn't detect patterns reliably yet</p>
+        <p><strong>Impact:</strong> Credibility destroyed, opportunity lost</p>
+        <p><strong>Mitigation:</strong></p>
+        <ul>
+          <li>Conservative claims (pattern detection not magic prediction)</li>
+          <li>Complement with Axialent human expertise</li>
+          <li>Frame as augmentation not replacement</li>
+          <li>Be transparent about current capabilities</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <p class="risk-label">Risk 5</p>
+        <h3>Timeline Pressure</h3>
+        <p><strong>Risk:</strong> Not enough time to build credible POC</p>
+        <p><strong>Impact:</strong> Rush leads to poor quality, unconvincing demo</p>
+        <p><strong>Mitigation:</strong></p>
+        <ul>
+          <li>Start with minimal viable (Option A)</li>
+          <li>Design for expansion (can deepen if interested)</li>
+          <li>Use &ldquo;Pattern Detective&rdquo; concept as future vision</li>
+          <li>Deliver what's promised, promise what's deliverable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN QUESTIONS -->
+  <div class="section" id="open-questions">
+    <div class="section-inner">
+      <h2>Open Questions</h2>
+
+      <h3>Data Access (Resolve Monday)</h3>
+      <ul class="task-list">
+        <li>How many productions can we analyze?</li>
+        <li>Izen emails only or Izen + Clapperboard?</li>
+        <li>How much email volume per production?</li>
+        <li>What budget/outcome data is available?</li>
+        <li>What time periods are covered?</li>
+      </ul>
+
+      <h3>Investment Structure (Define Before Pitch)</h3>
+      <ul class="task-list">
+        <li>What's the investment amount we're seeking from Velasco?</li>
+        <li>What equity stake are we offering?</li>
+        <li>What's the JV structure and economics?</li>
+        <li>What are the terms and timeline?</li>
+        <li>What other investors are we targeting?</li>
+      </ul>
+
+      <h3>Product Positioning (Clarify Internally)</h3>
+      <ul class="task-list">
+        <li>Is &ldquo;Pattern Detective&rdquo; the actual Stoic product name?</li>
+        <li>What's the full Stoic product roadmap beyond this?</li>
+        <li>Is TV/film production our primary vertical?</li>
+        <li>What other markets/industries are we targeting?</li>
+        <li>How does this integrate with other Stoic offerings?</li>
+      </ul>
+
+      <h3>Timeline &amp; Resources (Plan Execution)</h3>
+      <ul class="task-list">
+        <li>When do we present to Velasco?</li>
+        <li>How much time do we have to build POC?</li>
+        <li>What's our budget for POC development?</li>
+        <li>Who's building this (internal/external)?</li>
+        <li>What technical resources do we have?</li>
+      </ul>
+
+      <h3>Stoic Context (Background for Pitch)</h3>
+      <ul class="task-list">
+        <li>What's Stoic's current funding stage?</li>
+        <li>What traction do we have beyond Izen?</li>
+        <li>Why is Velasco strategic vs just another customer?</li>
+        <li>What's our total addressable market size?</li>
+        <li>What's our competitive positioning?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SUCCESS METRICS -->
+  <div class="section" id="success-metrics">
+    <div class="section-inner">
+      <h2>Success Metrics</h2>
+
+      <h3>POC Success = Velasco Engagement</h3>
+      <ul class="check-list">
+        <li>Velasco agrees problem is real and expensive</li>
+        <li>Velasco sees technology adds unique value</li>
+        <li>Velasco interested in investment discussion</li>
+        <li>Sara convinced AI augments her team's work</li>
+        <li>Invitation to deeper analysis or pilot</li>
+      </ul>
+
+      <h3>Investment Success = Term Sheet</h3>
+      <ul class="check-list">
+        <li>Velasco commits to investment amount</li>
+        <li>Terms negotiated and accepted</li>
+        <li>JV structure agreed in principle</li>
+        <li>Showcase client relationship formalized</li>
+        <li>Timeline for deployment established</li>
+      </ul>
+
+      <h3>Strategic Success = Market Entry</h3>
+      <ul class="check-list">
+        <li>Izen becomes reference customer</li>
+        <li>Case study demonstrates ROI</li>
+        <li>Network introductions to other producers</li>
+        <li>Product roadmap informed by real usage</li>
+        <li>Foundation for industry-wide adoption</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section" id="next-steps">
+    <div class="section-inner">
+      <h2>Next Steps</h2>
+
+      <h3>Immediate (This Week)</h3>
+      <ol>
+        <li><strong>Monday Meeting:</strong> Clarify data access and scope</li>
+        <li><strong>Data Inventory:</strong> Catalog available productions and emails</li>
+        <li><strong>POC Scoping:</strong> Decide on Option A/B/C based on data reality</li>
+        <li><strong>Resource Planning:</strong> Assign team and timeline</li>
+      </ol>
+
+      <h3>POC Development (2&ndash;4 Weeks)</h3>
+      <ol>
+        <li><strong>Data Preparation:</strong> Clean and structure email data</li>
+        <li><strong>Pattern Analysis:</strong> Apply Five Behaviors framework</li>
+        <li><strong>Visualization:</strong> Create compelling presentation format</li>
+        <li><strong>Narrative Development:</strong> Craft the story for Velasco</li>
+        <li><strong>Rehearsal:</strong> Practice the pitch internally</li>
+      </ol>
+
+      <h3>The Pitch (Target Date TBD)</h3>
+      <ol>
+        <li><strong>Present to Velasco + Sara:</strong> Show the findings</li>
+        <li><strong>Gauge Response:</strong> Test receptivity to investment conversation</li>
+        <li><strong>Follow-up:</strong> Provide deeper analysis or address concerns</li>
+        <li><strong>Investment Discussion:</strong> If receptive, move to terms</li>
+        <li><strong>Close:</strong> Secure commitment and begin partnership</li>
+      </ol>
+
+      <h3>Post-POC (If Successful)</h3>
+      <ol>
+        <li><strong>Pilot Deployment:</strong> Begin working with Izen productions</li>
+        <li><strong>Product Refinement:</strong> Incorporate learnings</li>
+        <li><strong>Investment Closing:</strong> Formalize terms and funding</li>
+        <li><strong>JV Formation:</strong> Structure partnership</li>
+        <li><strong>Market Development:</strong> Leverage Izen showcase for growth</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- THE NARRATIVE ARC -->
+  <div class="section" id="narrative-arc">
+    <div class="section-inner">
+      <h2>The Narrative Arc</h2>
+
+      <h3>The Story We're Telling Velasco</h3>
+
+      <div class="narrative-item">
+        <p><strong>Opening:</strong> &ldquo;You have an invisible problem that's costing you &euro;750K per year. We can make it visible.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Evidence:</strong> &ldquo;Here's what's actually happening in your productions, in your own words, from your own emails.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Insight:</strong> &ldquo;The pattern is systematic. It happens at Week 3. Both sides contribute. It's predictable.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Impact:</strong> &ldquo;This is why budgets blow up. This is exactly how much it costs. This is how often it happens.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Solution:</strong> &ldquo;AI can reveal patterns before they become crises. Interventions become precise, not random.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Opportunity:</strong> &ldquo;This problem isn't just yours &mdash; it's industry-wide. Early mover advantage. Transform how productions work.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>The Ask:</strong> &ldquo;Invest in Stoic. Partner with us. Become the showcase. Share in the upside. Change the game.&rdquo;</p>
+      </div>
+      <div class="narrative-item">
+        <p><strong>Closing:</strong> &ldquo;You can keep bleeding money, or you can be part of the solution. What do you choose?&rdquo;</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section" id="conclusion">
+    <div class="section-inner">
+      <h2>Conclusion</h2>
+
+      <p>This is a triple-win opportunity:</p>
+      <ul>
+        <li><strong>Izen</strong> solves expensive problem + gains investment returns</li>
+        <li><strong>Stoic</strong> secures investment + validation + market entry</li>
+        <li><strong>Industry</strong> gets transformative new capability</li>
+      </ul>
+
+      <p>The POC is not just a demo &mdash; it's the first chapter of a partnership story.</p>
+
+      <p>Success requires:</p>
+      <ul>
+        <li>Compelling evidence from real data</li>
+        <li>Strategic framing of the opportunity</li>
+        <li>Velasco seeing himself as co-creator, not customer</li>
+        <li>Credible balance between problem and possibility</li>
+      </ul>
+
+      <p><strong>Next milestone: Monday data access meeting</strong></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Document prepared by Stoic Strategy Team &middot; Internal Strategic Planning &middot; Version 1.0 &mdash; October 2025</p>
+  </div>
+
+</body>
+</html>

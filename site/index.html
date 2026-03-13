@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLIA Teams &mdash; Demo Materials | Stoic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stoic-yellow: #FFD500;
+            --stoic-red: #C9332B;
+            --stoic-gray: #E6E6E6;
+            --base-white: #FFFFFF;
+            --black: #000000;
+            --text-secondary: #444;
+            --text-muted: #666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--black);
+            background: var(--base-white);
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--base-white);
+            border-bottom: 3px solid var(--stoic-yellow);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar .logo {
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .top-bar .doc-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 9rem 2rem 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            line-height: 1.15;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero .thesis-line {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .cards-section {
+            padding: 2rem 2rem 4rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .group-label {
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            margin-top: 3rem;
+        }
+
+        .group-label:first-child {
+            margin-top: 0;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--base-white);
+            border: 2px solid var(--stoic-gray);
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .card:hover {
+            border-color: var(--stoic-yellow);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .card .arrow {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--stoic-red);
+            font-weight: 600;
+        }
+
+        .foundation-section {
+            padding: 3rem 2rem 5rem;
+            max-width: 960px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .foundation-link {
+            display: inline-block;
+            background: var(--black);
+            color: var(--base-white);
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .foundation-link:hover {
+            background: var(--stoic-red);
+        }
+
+        .foundation-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2rem; }
+            .hero { padding: 7rem 1.5rem 2rem; }
+            .cards-section { padding: 1.5rem; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">Stoic</div>
+    <div class="doc-label">PLIA Teams &mdash; Demo Materials</div>
+</div>
+
+<div class="hero">
+    <h1>PLIA Teams</h1>
+    <div class="subtitle">Investor Demo Materials</div>
+    <p class="thesis-line">
+        AI-powered team effectiveness for TV production. The human layer on top of PLIA&rsquo;s operational data &mdash; team agreements, coaching, and organizational intelligence.
+    </p>
+</div>
+
+<div class="cards-section">
+
+    <div class="group-label">The Narrative</div>
+    <div class="card-grid">
+        <a href="demo-flow.html" class="card">
+            <h3>Investor Demo Flow</h3>
+            <p>6-beat walkthrough: from Elena&rsquo;s 30-second nudge to Sara&rsquo;s portfolio dashboard. The story we tell investors.</p>
+            <span class="arrow">Read &rarr;</span>
+        </a>
+        <a href="demo-scenario.html" class="card">
+            <h3>Alfonso el Sabio Scenario</h3>
+            <p>Fictional iZen production grounded in real data. 8 characters, 7 misalignments, 2 layers of intervention.</p>
+            <span class="arrow">Read &rarr;</span>
+        </a>
+        <a href="strategic-brief.html" class="card">
+            <h3>Strategic Brief</h3>
+            <p>The IZEN market case: &euro;750K+ in annual production overruns from team dysfunction. Problem framing + investment thesis.</p>
+            <span class="arrow">Read &rarr;</span>
+        </a>
+    </div>
+
+    <div class="group-label">The Build</div>
+    <div class="card-grid">
+        <a href="dashboard-spec.html" class="card">
+            <h3>Dashboard Design Spec</h3>
+            <p>Visual and interaction spec for the custom dashboard &mdash; evidence cards, coach synthesis, three altitude views.</p>
+            <span class="arrow">Read &rarr;</span>
+        </a>
+        <a href="data-infra.html" class="card">
+            <h3>Data Infrastructure</h3>
+            <p>What PLIA already captures (scripts, budgets, chats) and how PLIA Teams adds the human layer on the same data.</p>
+            <span class="arrow">Read &rarr;</span>
+        </a>
+    </div>
+
+</div>
+
+<div class="foundation-section">
+    <div class="group-label">Foundation</div>
+    <a href="https://stoic-2026.netlify.app/" class="foundation-link" target="_blank">
+        Product Thesis &rarr;
+    </a>
+    <p class="foundation-label">Full product thesis on stoic-2026.netlify.app</p>
+</div>
+
+</body>
+</html>

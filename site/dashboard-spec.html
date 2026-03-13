@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Design Spec — PLIA Teams | Stoic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+      --status-green: #22c55e;
+      --coach-purple-bg: #F5F0FF;
+      --coach-purple-accent: #8b5cf6;
+      --sara-blue-bg: #a5d8ff;
+      --sara-blue-accent: #4a9eed;
+      --text-label: #757575;
+      --light-yellow-tint: #FFF9E0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--black);
+      line-height: 1.7;
+      background: var(--base-white);
+    }
+
+    /* Top bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--base-white);
+      border-bottom: 3px solid var(--stoic-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      height: 56px;
+    }
+
+    .top-bar .logo {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .top-bar .doc-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Main content */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 2rem 4rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--stoic-red); }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--stoic-gray);
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero .meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .hero .meta strong { color: var(--text-secondary); }
+
+    /* TOC */
+    .toc {
+      background: #fafafa;
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .toc h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      color: var(--black);
+    }
+
+    .toc ol {
+      padding-left: 1.25rem;
+    }
+
+    .toc li {
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .toc a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover { color: var(--stoic-red); }
+
+    /* Sections */
+    section {
+      padding: 2.5rem 0;
+    }
+
+    section:nth-child(even) {
+      background: #fafafa;
+      margin: 0 -2rem;
+      padding: 2.5rem 2rem;
+      border-radius: 0;
+    }
+
+    .section-inner {
+      max-width: 700px;
+    }
+
+    h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--stoic-gray);
+    }
+
+    h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--stoic-red);
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    h4 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      max-width: 700px;
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      max-width: 700px;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+
+    li { margin-bottom: 0.4rem; }
+
+    strong { font-weight: 600; }
+
+    /* Blockquotes */
+    blockquote {
+      border-left: 4px solid var(--stoic-red);
+      padding: 1rem 1.5rem;
+      background: #fafafa;
+      font-style: italic;
+      margin: 1.25rem 0;
+      max-width: 700px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    blockquote p { margin-bottom: 0; }
+
+    /* Code blocks */
+    pre {
+      background: #f4f4f5;
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      max-width: 100%;
+    }
+
+    pre code {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--black);
+    }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.88em;
+      background: #f4f4f5;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      max-width: 700px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead th {
+      background: var(--black);
+      color: var(--base-white);
+      font-weight: 600;
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    tbody td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--stoic-gray);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) { background: #fafafa; }
+
+    /* Color swatch */
+    .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .checklist li::before {
+      content: '\2610';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    /* Comparison table highlight */
+    .comparison-table thead th:first-child {
+      width: 20%;
+    }
+
+    /* Separator */
+    hr {
+      border: none;
+      border-top: 2px solid var(--stoic-gray);
+      margin: 2rem 0;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--stoic-gray);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <a href="index.html" class="logo">Stoic</a>
+    <span class="doc-label">DASHBOARD DESIGN SPEC</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <a href="index.html" class="back-link">&larr; Back to Hub</a>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>PLIA Teams &mdash; Dashboard Design Spec</h1>
+      <div class="meta">
+        <strong>Date:</strong> March 11, 2026<br>
+        <strong>Companion to:</strong> prototype-build-plan-v2-10mar2026.md<br>
+        <strong>Purpose:</strong> Visual and interaction spec for the custom dashboard &mdash; the only new surface in PLIA Teams.<br>
+        <strong>Brand:</strong> Stoic (adapted for PLIA product context)
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#layout">Layout Decision: Hybrid</a></li>
+        <li><a href="#colors">Color System (Stoic Brand &rarr; PLIA)</a></li>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#cards">Evidence Card Anatomy</a></li>
+        <li><a href="#status-bar">Status Bar</a></li>
+        <li><a href="#coach">Coach Message</a></li>
+        <li><a href="#chat">Chat Behavior</a></li>
+        <li><a href="#altitudes">Three Altitudes (Same Layout, Different Content)</a></li>
+        <li><a href="#cross-alert">Cross-Production Alert</a></li>
+        <li><a href="#references">Visual References</a></li>
+        <li><a href="#open-questions">Open Questions</a></li>
+      </ol>
+    </div>
+
+    <!-- Section 1: Layout Decision -->
+    <section id="layout">
+      <div class="section-inner">
+        <h2>1. Layout Decision: Hybrid</h2>
+        <p>Chosen over "dashboard-first" (Option A) and "conversation-first" (Option B).</p>
+        <p>The hybrid combines a minimal portfolio status bar with a conversation-first flow. The coach's voice is the main content; evidence cards are inline artifacts the coach references.</p>
+
+        <h3>Page structure (top to bottom)</h3>
+<pre><code>&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;  &#9679; Alfonso   &#9679; Cacao   &#9679; CAPA              &#9474;  &#8592; Status bar (1-second scan)
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;  Coach: "Hola Sara. Dos decisiones de       &#9474;  &#8592; Coach synthesis (the main event)
+&#9474;  alcance creativo sin respaldo de           &#9474;
+&#9474;  presupuesto..."                            &#9474;
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;    &#9474;  &#8592; Evidence cards (inline artifacts)
+&#9474;  &#9474;Scriptorium&#9474; &#9474;  Ecija   &#9474; &#9474;Pulso Arte&#9474;    &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;    &#9474;
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;  Cross: bypass en 2 de 3 producciones       &#9474;  &#8592; Cross-production alert
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;  Sara: "S&#237;, es parecido..."                &#9474;  &#8592; Conversation continues
+&#9474;  Coach: "De acuerdo. En Cacao se resolvi&#243;&#8230;" &#9474;
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;  &#128172; Escribe al coach...                     &#9474;  &#8592; Chat input (always visible)
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</code></pre>
+
+        <h3>Why hybrid over the alternatives</h3>
+        <ul>
+          <li><strong>vs Dashboard-first (Option A):</strong> Cards at top make the coach feel like a feature of the dashboard. Dead zone between cards and chat. Looks like every other SaaS tool.</li>
+          <li><strong>vs Conversation-first (Option B):</strong> Coach synthesis IS turn 1 of the chat &mdash; duplicating it as both a "synthesis zone" and a chat message is awkward.</li>
+          <li><strong>Hybrid solves it:</strong> Status bar gives the 1-second portfolio scan. Coach speaks immediately below. Evidence cards are "attachments" to the coach's message. Conversation flows naturally. No duplication.</li>
+        </ul>
+
+        <h3>Design principle alignment</h3>
+        <ul>
+          <li>"Interpretation + evidence, side by side" &rarr; Coach synthesis top, evidence cards below</li>
+          <li>"Conversations, not tasks" &rarr; The page IS a conversation with data woven in</li>
+          <li>"The coach initiates with a question, not a report" &rarr; Coach message is the main event, not the cards</li>
+          <li>"The product lives where the team already works" &rarr; Dashboard feels like a chat, not a control panel</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 2: Color System -->
+    <section id="colors">
+      <div class="section-inner">
+        <h2>2. Color System (Stoic Brand &rarr; PLIA)</h2>
+
+        <h3>From Stoic brand guide</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Token</th><th>Hex</th><th>PLIA usage</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Stoic Yellow</td>
+                <td><span class="swatch" style="background:#FFD500;"></span><code>#FFD500</code></td>
+                <td>Warning status, capacity bars, active signals</td>
+              </tr>
+              <tr>
+                <td>Stoic Red</td>
+                <td><span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></td>
+                <td>Urgent/critical signals, pattern badges (use sparingly)</td>
+              </tr>
+              <tr>
+                <td>Stoic Gray</td>
+                <td><span class="swatch" style="background:#E6E6E6;"></span><code>#E6E6E6</code></td>
+                <td>Backgrounds, card borders, bar tracks, inactive states</td>
+              </tr>
+              <tr>
+                <td>Base White</td>
+                <td><span class="swatch" style="background:#FFFFFF;"></span><code>#FFFFFF</code></td>
+                <td>Card backgrounds, page background</td>
+              </tr>
+              <tr>
+                <td>Black</td>
+                <td><span class="swatch" style="background:#000000;"></span><code>#000000</code></td>
+                <td>Primary text, headings</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>PLIA-specific additions</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Token</th><th>Hex</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Status Green</td>
+                <td><span class="swatch" style="background:#22c55e;"></span><code>#22c55e</code></td>
+                <td>Verde status &mdash; production healthy, no signals</td>
+              </tr>
+              <tr>
+                <td>Coach Purple</td>
+                <td><span class="swatch" style="background:#F5F0FF;"></span><code>#F5F0FF</code> (bg) / <span class="swatch" style="background:#8b5cf6;"></span><code>#8b5cf6</code> (accent)</td>
+                <td>Coach message background tint, coach identity</td>
+              </tr>
+              <tr>
+                <td>Sara Blue</td>
+                <td><span class="swatch" style="background:#a5d8ff;"></span><code>#a5d8ff</code> (bg) / <span class="swatch" style="background:#4a9eed;"></span><code>#4a9eed</code> (accent)</td>
+                <td>User message background, chat input</td>
+              </tr>
+              <tr>
+                <td>Text Secondary</td>
+                <td><span class="swatch" style="background:#757575;"></span><code>#757575</code></td>
+                <td>Labels, metadata, secondary information</td>
+              </tr>
+              <tr>
+                <td>Light Yellow Tint</td>
+                <td><span class="swatch" style="background:#FFF9E0;"></span><code>#FFF9E0</code></td>
+                <td>Optional: yellow-tinted card background variant</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Status color mapping</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Status</th><th>Left border</th><th>Dot color</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Amarillo</td>
+                <td><span class="swatch" style="background:#FFD500;"></span><code>#FFD500</code></td>
+                <td><span class="swatch" style="background:#FFD500;"></span><code>#FFD500</code></td>
+                <td>Warning &mdash; signals that need attention</td>
+              </tr>
+              <tr>
+                <td>Rojo</td>
+                <td><span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></td>
+                <td><span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></td>
+                <td>Urgent &mdash; escalating or time-sensitive</td>
+              </tr>
+              <tr>
+                <td>Verde</td>
+                <td><span class="swatch" style="background:#22c55e;"></span><code>#22c55e</code></td>
+                <td><span class="swatch" style="background:#22c55e;"></span><code>#22c55e</code></td>
+                <td>Healthy &mdash; no active signals</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Typography -->
+    <section id="typography">
+      <div class="section-inner">
+        <h2>3. Typography</h2>
+        <p>From Stoic brand guide:</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Element</th><th>Font</th><th>Weight</th><th>Size</th><th>Color</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Card title</td>
+                <td>Montserrat Alternates</td>
+                <td>600 (Semi-Bold)</td>
+                <td>16-18px</td>
+                <td><span class="swatch" style="background:#000000;"></span><code>#000000</code></td>
+              </tr>
+              <tr>
+                <td>Status label</td>
+                <td>Montserrat</td>
+                <td>400</td>
+                <td>14px</td>
+                <td><span class="swatch" style="background:#757575;"></span><code>#757575</code></td>
+              </tr>
+              <tr>
+                <td>Coach message</td>
+                <td>Montserrat</td>
+                <td>400</td>
+                <td>15-16px</td>
+                <td><span class="swatch" style="background:#000000;"></span><code>#000000</code></td>
+              </tr>
+              <tr>
+                <td>Metric (big number)</td>
+                <td>Montserrat Alternates</td>
+                <td>700</td>
+                <td>18-20px</td>
+                <td>status color</td>
+              </tr>
+              <tr>
+                <td>Body text / details</td>
+                <td>Montserrat</td>
+                <td>400</td>
+                <td>14px</td>
+                <td><span class="swatch" style="background:#757575;"></span><code>#757575</code></td>
+              </tr>
+              <tr>
+                <td>Pattern badge</td>
+                <td>Montserrat</td>
+                <td>500</td>
+                <td>14px</td>
+                <td><span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></td>
+              </tr>
+              <tr>
+                <td>Chat input placeholder</td>
+                <td>Montserrat</td>
+                <td>400</td>
+                <td>16px</td>
+                <td><span class="swatch" style="background:#757575;"></span><code>#757575</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Evidence Card Anatomy -->
+    <section id="cards">
+      <div class="section-inner">
+        <h2>4. Evidence Card Anatomy</h2>
+        <p>Each card represents one signal the coach is referencing. Cards are the evidence &mdash; the coach's message is the interpretation.</p>
+
+        <h3>Card template</h3>
+<pre><code>&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;&#9612; Signal Name                    &#9474;  &#8592; Yellow or red left border (5px)
+&#9474;  Amarillo &#183; 5d                  &#9474;  &#8592; Status dot + days open pill
+&#9474;                                 &#9474;
+&#9474;  &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9617;&#9617; 94%       &#9474;  &#8592; Visual indicator (bar, sparkline, or metric)
+&#9474;  Label                          &#9474;  &#8592; What the indicator means
+&#9474;                                 &#9474;
+&#9474;  Core issue text                &#9474;  &#8592; Bold, black &#8212; the "what"
+&#9474;  &#9484;&#9472; Pattern badge &#9472;&#9488;           &#9474;  &#8592; Red border outline &#8212; the "so what"
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</code></pre>
+
+        <h3>Card dimensions</h3>
+        <ul>
+          <li>Width: ~360px at full size, ~215px in 3-up layout (desktop ~1200px content area)</li>
+          <li>Height: flexible, ~95-120px depending on content</li>
+          <li>Border radius: 8px (roundness type 3)</li>
+          <li>Border: 2px <code>#E6E6E6</code> + 5px left border in status color</li>
+          <li>Background: <code>#FFFFFF</code></li>
+        </ul>
+
+        <h3>Visual indicator types (per signal type)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Signal type</th><th>Indicator</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Capacity</td><td>Horizontal bar (yellow fill on gray track)</td><td>Arte 94%</td></tr>
+              <tr><td>Pulse trend</td><td>Big metric with direction arrow or delta</td><td>8.1 &rarr; 5.3 &darr;&darr;</td></tr>
+              <tr><td>Days open</td><td>Gray pill with number</td><td>5d, 3d</td></tr>
+              <tr><td>Timeline</td><td>Text-based (deadline date)</td><td>"Permisos vencen 15" in red</td></tr>
+              <tr><td>Process compliance</td><td>Text + pattern badge</td><td>"2do bypass en 3 semanas"</td></tr>
+              <tr><td>Status OK</td><td>No card needed, or minimal green card</td><td>"Sin se&ntilde;ales"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Three concrete cards (Sara's view &mdash; Alfonso el Sabio)</h3>
+
+        <h4>Scriptorium (Amarillo)</h4>
+        <ul>
+          <li>Left border: <span class="swatch" style="background:#FFD500;"></span><code>#FFD500</code></li>
+          <li>Capacity bar: 94% filled in yellow</li>
+          <li>Issue: "Sin aprobaci&oacute;n de presupuesto"</li>
+          <li>Badge: "2do bypass en 3 semanas" (red outline)</li>
+          <li>Days: 5d</li>
+        </ul>
+
+        <h4>Ecija (Amarillo)</h4>
+        <ul>
+          <li>Left border: <span class="swatch" style="background:#FFD500;"></span><code>#FFD500</code></li>
+          <li>No bar &mdash; text-based signal</li>
+          <li>Lines: "+2 d&iacute;as extensi&oacute;n" / "Cascada a Segovia" / "Permisos vencen 15" (red text)</li>
+          <li>Days: 3d</li>
+        </ul>
+
+        <h4>Pulso Arte (Red border &mdash; most urgent)</h4>
+        <ul>
+          <li>Left border: <span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></li>
+          <li>Big metric: "8.1 &rarr; 5.3" in red, 18px</li>
+          <li>Lines: "94% capacidad" / "12d sin descanso" (red text)</li>
+          <li>No days pill &mdash; ongoing</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 5: Status Bar -->
+    <section id="status-bar">
+      <div class="section-inner">
+        <h2>5. Status Bar</h2>
+        <p>Minimal portfolio overview. One line, always at top.</p>
+
+<pre><code>&#9679; Alfonso    &#9679; Cacao    &#9679; CAPA</code></pre>
+
+        <ul>
+          <li>Background: <code>#FFFFFF</code> with <code>#E6E6E6</code> border</li>
+          <li>Height: ~35px</li>
+          <li>Each production: colored dot (12px) + name in 14px Montserrat</li>
+          <li>Dot color = production status (amarillo/verde/rojo)</li>
+          <li>Clicking a production name could filter the view below (future &mdash; not in prototype)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 6: Coach Message -->
+    <section id="coach">
+      <div class="section-inner">
+        <h2>6. Coach Message</h2>
+        <p>The main content of the page. The coach speaks first.</p>
+        <ul>
+          <li>Background: <span class="swatch" style="background:#F5F0FF;"></span><code>#F5F0FF</code> (light purple tint)</li>
+          <li>Border: 1px <code>#E6E6E6</code></li>
+          <li>Border radius: 8px</li>
+          <li>Label: "Coach" in <span class="swatch" style="background:#8b5cf6;"></span><code>#8b5cf6</code>, 14px, top-left</li>
+          <li>Text: Montserrat 400, 15-16px, <code>#000000</code></li>
+          <li>Full-width (spans content area)</li>
+        </ul>
+        <p>The coach message IS turn 1 of the conversation. It's not a separate "synthesis zone" &mdash; it's the first chat bubble, just visually prominent because it's the coach.</p>
+      </div>
+    </section>
+
+    <!-- Section 7: Chat Behavior -->
+    <section id="chat">
+      <div class="section-inner">
+        <h2>7. Chat Behavior</h2>
+
+        <h3>Message alignment</h3>
+        <ul>
+          <li><strong>Coach messages:</strong> Left-aligned, purple tint background (<span class="swatch" style="background:#F5F0FF;"></span><code>#F5F0FF</code>)</li>
+          <li><strong>Sara/user messages:</strong> Right-aligned, blue tint background (<span class="swatch" style="background:#a5d8ff;"></span><code>#a5d8ff</code>)</li>
+        </ul>
+
+        <h3>Chat area</h3>
+        <ul>
+          <li>Below the evidence cards and cross-production alert</li>
+          <li>Shows pre-seeded conversation (Sara's reply + coach's follow-up)</li>
+          <li>Input at bottom: white background, <code>#E6E6E6</code> border, placeholder "Escribe al coach..."</li>
+          <li>Input always visible (sticky bottom in production; static in prototype)</li>
+        </ul>
+
+        <h3>In the prototype</h3>
+        <ul>
+          <li>Pre-seeded: 3 turns (coach, Sara, coach)</li>
+          <li>No actual typing &mdash; it's a Figma clickthrough</li>
+          <li>Chat area scrolls if content overflows</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 8: Three Altitudes -->
+    <section id="altitudes">
+      <div class="section-inner">
+        <h2>8. Three Altitudes (Same Layout, Different Content)</h2>
+        <p>All three views use the same hybrid layout. What changes:</p>
+
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr><th>Element</th><th>Sara (EP)</th><th>Pilar (Line Producer)</th><th>Consultant</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Status bar</strong></td>
+                <td>3 productions (portfolio)</td>
+                <td>1 production (Alfonso)</td>
+                <td>1 production (Alfonso)</td>
+              </tr>
+              <tr>
+                <td><strong>Coach tone</strong></td>
+                <td>Strategic &mdash; "&iquest;T&uacute; lo ves igual?"</td>
+                <td>Operational &mdash; "&iquest;Por cu&aacute;l empiezas?"</td>
+                <td>Peer &mdash; "una se&ntilde;al estructural"</td>
+              </tr>
+              <tr>
+                <td><strong>Evidence cards</strong></td>
+                <td>3 cards (Scriptorium, Ecija, Pulso)</td>
+                <td>5 cards (more operational detail)</td>
+                <td>2 structural signals + 1 resolved</td>
+              </tr>
+              <tr>
+                <td><strong>Cross-production</strong></td>
+                <td>Yes &mdash; "bypass en 2 de 3"</td>
+                <td>No &mdash; single production view</td>
+                <td>Yes &mdash; systemic pattern</td>
+              </tr>
+              <tr>
+                <td><strong>Card content</strong></td>
+                <td>Consequences + patterns</td>
+                <td>Operational gaps + timelines</td>
+                <td>Group dynamics + source traceability</td>
+              </tr>
+              <tr>
+                <td><strong>Never shows</strong></td>
+                <td>Individual names, who caused what</td>
+                <td>Individual coaching content</td>
+                <td>Individual behavior, language analysis</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Navigation between altitudes</h3>
+        <ul>
+          <li>For prototype: separate Figma frames, click to switch</li>
+          <li>Demo flow: Oseas clicks from Sara &rarr; Pilar &rarr; Consultant</li>
+          <li>Future: tabs or dropdown selector at top of page</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 9: Cross-Production Alert -->
+    <section id="cross-alert">
+      <div class="section-inner">
+        <h2>9. Cross-Production Alert</h2>
+        <p>Appears between evidence cards and conversation.</p>
+        <ul>
+          <li>Background: <span class="swatch" style="background:#ffc9c9;"></span><code>#ffc9c9</code> at 60% opacity (light red)</li>
+          <li>Border: 1px <span class="swatch" style="background:#C9332B;"></span><code>#C9332B</code></li>
+          <li>Border radius: 8px</li>
+          <li>Height: ~30px</li>
+          <li>Text: 14px Montserrat, <code>#000000</code></li>
+          <li>Only appears when there's a pattern across productions</li>
+          <li>Sara's view: "Bypass de aprobaci&oacute;n en 2 de 3 producciones"</li>
+          <li>Consultant's view: elevated to a full signal card (systemic pattern)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 10: Visual References -->
+    <section id="references">
+      <div class="section-inner">
+        <h2>10. Visual References</h2>
+        <p>Screenshots saved in <code>references/</code> folder:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Product</th><th>Pattern</th><th>File prefix</th><th>Key takeaway</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Perplexity</td>
+                <td>Chat-first + inline citations</td>
+                <td><code>perplexity-*</code></td>
+                <td>Coach synthesis = Perplexity answer. Evidence cards = citation chips.</td>
+              </tr>
+              <tr>
+                <td>Accern Rhea</td>
+                <td>Split-screen chat + report</td>
+                <td><code>accern-rhea-*</code></td>
+                <td>Power-user pattern. Relevant for consultant view.</td>
+              </tr>
+              <tr>
+                <td>Hex Threads</td>
+                <td>Chat &rarr; inline data viz</td>
+                <td><code>hex-threads-*</code></td>
+                <td>Question triggers data. Chat IS the analytics surface.</td>
+              </tr>
+              <tr>
+                <td>Cleo AI</td>
+                <td>Pure chat-first finance</td>
+                <td><code>cleo-*</code></td>
+                <td>Data cards inside conversation stream. Mobile-first.</td>
+              </tr>
+              <tr>
+                <td>Lazarev article</td>
+                <td>AI dashboard principles</td>
+                <td><code>lazarev-*</code></td>
+                <td>5 principles: hierarchy over density, citations with outputs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Wireframes</h3>
+        <ul>
+          <li><strong>Layout comparison (Option A vs Hybrid):</strong> <a href="https://excalidraw.com/#json=_01jFWDyj5DIS9CV3r-Am,dqfeECqWYMP3OIUirR5ULg" target="_blank">Excalidraw link</a></li>
+          <li><strong>Evidence card + hybrid context (Stoic brand):</strong> <a href="https://excalidraw.com/#json=LeUstek1ZDK2JJokICpFL,ZsDnlV7kqoDKOBelZ4g6cw" target="_blank">Excalidraw link</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 11: Open Questions -->
+    <section id="open-questions">
+      <div class="section-inner">
+        <h2>11. Open Questions</h2>
+        <ul class="checklist">
+          <li>Green for "Verde" status &mdash; <span class="swatch" style="background:#22c55e;"></span><code>#22c55e</code> works but isn't in Stoic palette. Confirm or pick a Stoic-compatible green.</li>
+          <li>Card interaction in prototype &mdash; do cards expand on click? Or are they static?</li>
+          <li>Coach avatar/icon &mdash; does the coach have a visual identity (icon, avatar) or just the "Coach" label?</li>
+          <li>Suggested prompts &mdash; does the chat input show suggestion chips (like Perplexity) or just a blank field?</li>
+          <li>Mobile responsiveness &mdash; prototype is desktop-first, but does the demo ever show mobile? (Google Chat mocks are mobile-like)</li>
+          <li>Pulse sparkline &mdash; should Pulso Arte card have a mini sparkline showing the 3-week trend, or is the big metric "8.1&rarr;5.3" enough?</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Derived from: Design session (Mar 11, 2026) + Prototype Build Plan v2 + Stoic Brand Guidelines + Visual reference research.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

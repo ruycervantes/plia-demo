@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investor Demo Flow — PLIA Teams | Stoic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--base-white);
+    }
+
+    /* ── Top Bar ── */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--base-white);
+      border-bottom: 3px solid var(--stoic-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat Alternates', sans-serif;
+    }
+    .top-bar .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .top-bar .doc-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── Layout ── */
+    .page-body { padding-top: 60px; }
+
+    .back-link {
+      display: inline-block;
+      margin: 1.25rem 2rem 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--stoic-red); }
+
+    .section {
+      padding: 3rem 2rem;
+    }
+    .section:nth-child(even) { background: #fafafa; }
+    .section:nth-child(odd)  { background: var(--base-white); }
+
+    .section-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      background: var(--base-white);
+    }
+    .hero h1 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .hero .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hero .meta {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ── TOC ── */
+    .toc {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 2rem 2.5rem;
+    }
+    .toc h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+      padding: 0;
+    }
+    .toc li {
+      counter-increment: toc-counter;
+      margin-bottom: 0.4rem;
+    }
+    .toc li::before {
+      content: counter(toc-counter) ". ";
+      font-weight: 600;
+      color: var(--stoic-red);
+    }
+    .toc a {
+      text-decoration: none;
+      color: var(--black);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .toc a:hover { color: var(--stoic-red); }
+
+    /* ── Typography ── */
+    h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--stoic-yellow);
+    }
+    h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--stoic-red);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    h4 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+
+    em { font-style: italic; }
+    strong { font-weight: 700; }
+
+    /* ── Stage direction (italic paragraphs) ── */
+    .stage-direction {
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Blockquotes — product nudges / Spanish messages ── */
+    blockquote {
+      border-left: 4px solid var(--stoic-red);
+      padding: 1rem 1.5rem;
+      background: #fafafa;
+      font-style: italic;
+      margin: 1.25rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* Nudge variant — the key product moments */
+    .nudge {
+      border-left: 4px solid var(--stoic-yellow);
+      background: #fffce6;
+      padding: 1.25rem 1.5rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+      border-radius: 0 10px 10px 0;
+      position: relative;
+    }
+    .nudge::before {
+      content: "PLIA";
+      position: absolute;
+      top: -0.6rem;
+      left: 1rem;
+      background: var(--stoic-yellow);
+      color: var(--black);
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    /* ── Key takeaway boxes ── */
+    .key-takeaway {
+      background: var(--stoic-yellow);
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      margin: 1.5rem 0;
+      font-weight: 600;
+    }
+
+    /* ── Lists ── */
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.35rem; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      max-width: 700px;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    thead th {
+      background: var(--black);
+      color: var(--base-white);
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      font-weight: 600;
+    }
+    tbody td {
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--stoic-gray);
+    }
+    tbody tr:nth-child(even) { background: #fafafa; }
+
+    /* ── Beat header badges ── */
+    .beat-badge {
+      display: inline-block;
+      background: var(--stoic-red);
+      color: var(--base-white);
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── HR ── */
+    hr {
+      border: none;
+      border-top: 2px solid var(--stoic-gray);
+      margin: 3rem 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: #fafafa;
+      border-top: 1px solid var(--stoic-gray);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .section { padding: 2rem 1.25rem; }
+      .top-bar { padding: 0.75rem 1rem; }
+      table { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="logo">Stoic</div>
+    <div class="doc-label">INVESTOR DEMO FLOW</div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- Back Link -->
+    <a class="back-link" href="index.html">&larr; Back to Hub</a>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Investor Demo Flow</h1>
+      <p class="subtitle">PLIA Teams &mdash; Prototype walkthrough for investor conversations</p>
+      <p class="meta">March 6, 2026 &middot; Source: Product Thesis v2 + Demo Flow v1 + Strategic Session</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#room-dynamics">Room Dynamics</a></li>
+        <li><a href="#the-demo">The Demo &mdash; Inside Out</a></li>
+        <li><a href="#beat-1">Beat 1: The Hook</a></li>
+        <li><a href="#beat-2">Beat 2: Rewind &mdash; The Foundation</a></li>
+        <li><a href="#beat-2b">Beat 2b: The Paracaidista</a></li>
+        <li><a href="#beat-3">Beat 3: The Coaching Layer</a></li>
+        <li><a href="#beat-4">Beat 4: How the System Knew</a></li>
+        <li><a href="#beat-5">Beat 5: The Team's Own Voice</a></li>
+        <li><a href="#beat-6">Beat 6: Zoom Out &mdash; Sara's Dashboard</a></li>
+        <li><a href="#after-the-demo">After the Demo</a></li>
+        <li><a href="#design-principles">Design Principles</a></li>
+      </ol>
+    </nav>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Room Dynamics -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="room-dynamics">
+      <div class="section-inner">
+        <h2>Room Dynamics</h2>
+
+        <h3>What this demo IS and IS NOT</h3>
+        <p>This is NOT a product demo. There is no shipped product to demo. This is a <strong>strategy artifact</strong> &mdash; it shows we've done the thinking, we understand the problem deeply, and we know precisely what the product should look like. The clickable prototype comes later to prove execution ability.</p>
+
+        <div class="key-takeaway">The demo's job: Make the investor see the future clearly enough to fund it. Not prove the past.</div>
+
+        <h3>Who's in the room</h3>
+        <p>Some of the people in the room <strong>lived the HPT experience</strong> with Valentin and Anabel. They saw production crews go from threatening each other to functioning as teams. They don't need to be convinced the methodology works &mdash; they felt it. The team agreements, the coaching distinctions &mdash; they know these work, even if they sound "soft" to someone who hasn't experienced them.</p>
+
+        <h3>What Oseas needs from this</h3>
+        <ul>
+          <li><strong>Armor against "show me the product":</strong> The demo IS the product vision, made concrete enough to feel real. The clickable prototype follows.</li>
+          <li><strong>Translation layer:</strong> Oseas can walk someone through this. The scenarios use production language, the financials are in EUR, the examples are IZEN-native.</li>
+          <li><strong>Confidence:</strong> The depth of thinking &mdash; trust architecture, two layers, three dashboard views, cross-vertical potential &mdash; shows this isn't a weekend prototype. It's a designed product with architectural clarity.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- The Demo — Inside Out -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="the-demo">
+      <div class="section-inner">
+        <h2>The Demo &mdash; Inside Out</h2>
+        <p>Structure: Inside-out &mdash; hook with the product moment, then zoom out to show how it works.</p>
+        <p>Scenario: <strong>Alfonso el Sabio</strong> &mdash; fictional IZEN production, 8-ep period drama, 15M EUR, two units, 200+ crew.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 1: The Hook -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-1">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 1</span>
+        <h2>The Hook</h2>
+
+        <p class="stage-direction">Oseas puts up one screen. No preamble.</p>
+
+        <p>Elena is the production designer on Alfonso el Sabio. It's week 3 of shooting. She gets this on her phone:</p>
+
+        <div class="nudge">
+          <p>"A new scene &mdash; 'Scriptorium / Cantigas' &mdash; appeared on next Tuesday's schedule. There's no budget approval and your department is at 94% allocation. Your library set is incredible and this scene would showcase it &mdash; but if budget gets approved late, your team won't have time to prepare it the way you'd want. Worth raising with Pilar?"</p>
+        </div>
+
+        <p>Elena taps "Si, enviar a Pilar." 30 seconds. Done. She moves on with her day.</p>
+
+        <p class="stage-direction">Oseas pauses. Then:</p>
+
+        <p>"That just prevented a 50K EUR crisis. A scene was about to shoot without budget approval, with a department that's already stretched. Nobody knew &mdash; not Pilar, not Sara, not Elena herself until 30 seconds ago. Now Pilar has the information. The conversation will happen. And Elena acted because the set she's proud of was at risk of being rushed."</p>
+
+        <div class="key-takeaway">"How did the system know? That's the product."</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 2: Rewind — The Foundation -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-2">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 2</span>
+        <h2>Rewind &mdash; The Foundation</h2>
+
+        <p class="stage-direction">Three weeks earlier. Alfonso el Sabio is greenlit.</p>
+
+        <p>Before production starts, the core team sits down &mdash; Marcos (showrunner), Pilar (line producer), Javier (director 1-4), Lucia (director 5-8), Tomas (DP), Elena (production designer), Raul (post-production) &mdash; and defines how they'll work together. This IS the HPT process, digitized.</p>
+
+        <h4>The team agreement &mdash; four dimensions, in their own words:</h4>
+
+        <p><strong>Purpose:</strong> "Bring Alfonso X's world to life &mdash; the king who tried to unite three cultures through knowledge. 8 episodes that establish iZen as Spain's answer to international period drama."</p>
+
+        <p><strong>Roles:</strong> Who approves new scenes? Marcos proposes, Pilar approves budget, director confirms schedule. Clear decision rights.</p>
+
+        <p>But the conversation isn't starting from zero. When the team gets to "who approves new scenes?", the system surfaces a lesson from previous productions:</p>
+
+        <div class="nudge">
+          <p>"In 3 of the last 5 iZen productions, scene approval bypasses happened in the first month &mdash; directors adding scenes without line producer sign-off. Teams that were explicit about the approval chain had fewer budget surprises. How do you want to handle this?"</p>
+        </div>
+
+        <p>The team discusses. They agree: "Marcos proposes, Pilar approves budget, director confirms schedule." They didn't invent this from scratch &mdash; they built on what iZen already learned from Cacao y Compania, from the CAPA docuseries, from every crew that came before them.</p>
+
+        <div class="key-takeaway">The learning doesn't live in a report nobody reads. It lives inside the conversation where it matters.</div>
+
+        <p><strong>Processes:</strong> Daily sync between Toledo and Madrid units. Urgent via WhatsApp, day-to-day via production email. Weekly all-hands.</p>
+
+        <p>Again, the system offers context:</p>
+
+        <div class="nudge">
+          <p>"In dual-unit setups, the daily sync tends to drop off around week 3-4. Previous teams found that assigning a sync owner kept it alive."</p>
+        </div>
+
+        <p>The team decides who owns it.</p>
+
+        <p><strong>Relationships:</strong> "We flag issues early &mdash; a problem shared in week 2 is a conversation, in week 6 it's a crisis." "When we say 'si,' we mean it. If we're not sure, we say 'lo pienso y te confirmo.'"</p>
+
+        <h4>The transparency moment:</h4>
+
+        <div class="nudge">
+          <p>"Here's how the system works with you. PLIA already processes your work channels for operations &mdash; ordering, logistics, scheduling. PLIA Teams adds a human layer on that same data. It watches whether the processes you just agreed to are alive. It notices operational gaps &mdash; a scene on the schedule without budget, a department at capacity. It asks you privately if something needs attention. It never reads private messages. Your coaching conversations are yours alone. Management sees team-level patterns &mdash; never individual behavior. The wall is absolute."</p>
+        </div>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"That conversation gives the system everything it needs. The team's own words become the baseline. And the team knows exactly what the system does and doesn't do. No surprises. No surveillance. Consent before data."</p>
+
+        <p>"And this conversation doesn't require 90 minutes in a conference room. Some teams have 3 weeks of prep. Some assemble the weekend before shooting. The onboarding is progressive &mdash; start with Roles and Processes in 20 minutes because those are urgent, add Purpose and Relationships in the first weekly meeting. The system works with whatever you gave it and asks for the rest when the moment is right."</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 2b: The Paracaidista -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-2b">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 2b</span>
+        <h2>The Paracaidista</h2>
+
+        <p class="stage-direction">Week 4. A new AD (assistant director) gets pulled in to replace someone who left. They weren't at onboarding. They don't know the team. They don't know the agreements.</p>
+
+        <p>They open the system and ask:</p>
+
+        <div class="nudge">
+          <p>"Who approves scene changes on this production?"</p>
+        </div>
+
+        <blockquote>
+          <p>"Marcos (showrunner) proposes. Pilar (line producer) approves budget. The episode director confirms schedule. If it affects other departments, Pilar coordinates. The team agreed on this in week 0."</p>
+        </blockquote>
+
+        <p>The AD asks:</p>
+
+        <div class="nudge">
+          <p>"What happened with the scriptorium scene?"</p>
+        </div>
+
+        <blockquote>
+          <p>"A scene was added to the schedule without budget approval. Elena (production designer) flagged it to Pilar. Budget was approved with an adjusted timeline. Art department is at 94% allocation &mdash; coordinate with Elena early if you need anything from her team."</p>
+        </blockquote>
+
+        <p>One more:</p>
+
+        <div class="nudge">
+          <p>"Anything from previous productions I should know about?"</p>
+        </div>
+
+        <blockquote>
+          <p>"In dual-unit setups, the daily sync between units tends to drop off around week 3-4. This production assigned a sync owner to keep it alive. The Toledo-Madrid sync thread is in the production Google Chat &mdash; check in with Pilar for access."</p>
+        </blockquote>
+
+        <p>30 seconds. The paracaidista has organizational context that would normally take 2 weeks of hallway conversations to piece together. They didn't attend onboarding. They don't need to &mdash; the agreement is alive and queryable, and it includes what's happened since.</p>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"That AD just landed in a 200-person production and got oriented in 30 seconds. Not from a PDF nobody reads. Not from asking around. From a living agreement that remembers what the team decided and what's happened since. <strong>You don't have to remember. The system remembers for you, structurally.</strong>"</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 3: The Coaching Layer -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-3">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 3</span>
+        <h2>The Coaching Layer</h2>
+
+        <p class="stage-direction">Back to week 3. The system has been coaching &mdash; privately, individually &mdash; since week 1.</p>
+
+        <h3>Lucia's story</h3>
+        <p class="stage-direction">Week 2, her first shoot day approaching:</p>
+
+        <div class="nudge">
+          <p>"Monday is your first day directing on Alfonso. During onboarding you described your visual approach as handheld intimacy &mdash; different from Javier's wide compositions. What do you want to establish in the first Toledo scene that makes episodes 5-8 feel like yours?"</p>
+        </div>
+
+        <p>Lucia types a few lines about what she wants the camera to feel like. The system remembers.</p>
+
+        <p>Three weeks later, the system notices: in two production calls, Javier proposed the visual approach for shared locations and Lucia confirmed without pushback. The gap between what she said she wanted and what she's doing:</p>
+
+        <div class="nudge">
+          <p>"In the last two calls, Javier proposed the shot approach for shared Toledo locations and you confirmed without changes. Your creative brief calls for handheld intimacy &mdash; a different feel. Are you getting the space to develop that? The next shared-location shoot is in 10 days."</p>
+        </div>
+
+        <p>Lucia might not have named what was happening &mdash; a first-time director deferring to a veteran. The system doesn't judge. It holds up a mirror: you said you wanted X, you're agreeing to Y, and the window is closing.</p>
+
+        <h3>Elena's story</h3>
+        <p class="stage-direction">Week 2, agreement check-in:</p>
+
+        <div class="nudge">
+          <p>"Your team agreed: 'flag issues early &mdash; a problem shared in week 2 is a conversation, in week 6 it's a crisis.' You're in week 2. Anything worth flagging while it's still a conversation?"</p>
+        </div>
+
+        <p>Elena flags that scriptorium set research is taking longer than expected. The system notes it &mdash; privately. Two weeks later, when her department is at 94% and a new scene lands on the schedule, the system has context: Elena already said she was stretched. The nudge in Beat 1 wasn't a cold alert &mdash; it was informed by what Elena herself had shared.</p>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"Nobody saw Lucia's coaching. Nobody saw Elena's flag. Private. Always. The system earns trust by helping individuals before asking anything of them. And every private interaction makes the system smarter &mdash; not about surveilling people, but about knowing what this team cares about."</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 4: How the System Knew -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-4">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 4</span>
+        <h2>How the System Knew</h2>
+
+        <p class="stage-direction">Back to the scriptorium nudge from Beat 1. How did the system detect the risk?</p>
+
+        <h4>Three facts from PLIA's existing operational data:</h4>
+
+        <ol>
+          <li><strong>Schedule</strong> &mdash; A new scene appears in the AD's blocking schedule: "Scriptorium / Cantigas," next Tuesday.</li>
+          <li><strong>Budget</strong> &mdash; No budget line exists. No line producer approval.</li>
+          <li><strong>Workload</strong> &mdash; Art department at 94% allocation, 3 pending requests.</li>
+        </ol>
+
+        <p>Plus one fact from the team agreement:</p>
+        <ul>
+          <li>The team agreed: "Marcos proposes, Pilar approves budget." This scene skipped that step.</li>
+        </ul>
+
+        <p>Plus context from Elena's own coaching:</p>
+        <ul>
+          <li>Elena flagged prep time concerns two weeks ago.</li>
+        </ul>
+
+        <p><strong>No transcript analysis. No commitment extraction.</strong> PLIA already tracks schedules, budgets, and department workload for its 80-100 operational agents. The team agreement provides the rules. The coaching provides the human context. Together: a scene is about to shoot without approval, the department can't absorb it, and the person who'd bear the cost already said she was stretched.</p>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"We didn't build new infrastructure. We added a human-layer interpretation on top of data PLIA already collects. The intelligence isn't in the AI &mdash; it's in the team agreement. The AI just connects the dots."</p>
+
+        <h3>What about Marcos?</h3>
+        <p>The system doesn't send him a nudge saying "you bypassed the process." It doesn't police. Elena or Pilar raise it with him &mdash; in a conversation, not a notification. The process corrects itself through people, not software.</p>
+
+        <h3>What if nobody acts?</h3>
+        <p>The operational gap stays open. A scene on the schedule with no budget, shooting in 5 days. That <em>consequence</em> &mdash; the factual gap &mdash; surfaces on Sara's dashboard. Not "Marcos went around Pilar." Just: "unapproved scene, 5 days out."</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 5: The Team's Own Voice -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-5">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 5</span>
+        <h2>The Team's Own Voice</h2>
+
+        <p class="stage-direction">End of week 3. Everyone gets a 5-second check-in.</p>
+
+        <div class="nudge">
+          <p>"One word: how was this week?"</p>
+          <p>"Are you getting what you need from the team to do your best work?" (1-10)</p>
+          <p>"Anything that's a conversation now but could become a crisis later?"</p>
+        </div>
+
+        <h4>What Elena sees:</h4>
+        <p>Her own trend. She's said "rushed" twice in three weeks. The system follows up privately: "You've said 'rushed' twice. What's driving that?"</p>
+
+        <h4>What Sara sees:</h4>
+        <p>Anonymous aggregates. "Art department energy: 8.1 to 5.3 this week." "3 of 7 respondents flagged 'prep time.'" No names. No individual scores.</p>
+
+        <p>The third question &mdash; "anything that's a conversation now but could become a crisis later?" &mdash; mirrors the team's own agreement. It's Grudin-safe: the person gets the relief of having flagged it. They're not filling out a form for HR. They're protecting themselves from a future crisis.</p>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"5 seconds per person. The individual sees their own pattern. Management sees the team's signal. <strong>The wall between the two is absolute.</strong>"</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Beat 6: Zoom Out — Sara's Dashboard -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="beat-6">
+      <div class="section-inner">
+        <span class="beat-badge">Beat 6</span>
+        <h2>Zoom Out &mdash; Sara's Dashboard</h2>
+
+        <p class="stage-direction">Same data, three altitudes. The system serves it to the right person at the right level.</p>
+
+        <h3>View A: Pilar (Line Producer) &mdash; "What do I need to know right now?"</h3>
+
+        <h4>Daily view:</h4>
+        <ul>
+          <li>Scriptorium scene: resolved &mdash; Elena raised it, budget approved with adjusted timeline</li>
+          <li>Ecija: Movie Magic shows 2 extra days added, cascade shows Segovia permits expire the 15th. Court scenes affected. Flagged.</li>
+          <li>Art department: pulse dropped from 8 to 5. Workload at 94%.</li>
+          <li>Process health: daily unit sync &mdash; active. Scene approval &mdash; 1 bypass this week (resolved).</li>
+        </ul>
+
+        <p>Pilar glances at this daily. It replaces the mental load of tracking 200+ people's processes in her head.</p>
+
+        <h3>View B: Sara (EP/CEO) &mdash; "Are my productions OK?"</h3>
+
+        <h4>Weekly scan &mdash; 5 minutes across everything:</h4>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Production</th>
+              <th>Status</th>
+              <th>Key signal</th>
+              <th>Days open</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alfonso el Sabio</td>
+              <td>Yellow</td>
+              <td>Schedule/budget gap resolved. Ecija cascade flagged. Art dept pulse dropped.</td>
+              <td>0 / 1 / 3</td>
+            </tr>
+            <tr>
+              <td>Cacao y Compania</td>
+              <td>Yellow</td>
+              <td>Location permits: 3 days past deadline.</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>CAPA Docuseries</td>
+              <td>Green</td>
+              <td>Clean.</td>
+              <td>&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><strong>Pattern alert:</strong> "Scene approval bypasses in 2 of 3 productions &mdash; scenes reaching schedule without line producer sign-off. May indicate systemic gap in approval process across iZen."</p>
+
+        <p><strong>Cross-production learning:</strong> "This is the 3rd production where scene approval gets bypassed in month 1. In Cacao y Compania, adding a budget-check gate to the scheduling tool resolved it within a week. Recommend raising in the next EP sync."</p>
+
+        <p>Sara doesn't know about Elena's coaching or Lucia's creative struggle. She sees consequences, patterns, and what worked before. Where to pay attention. Whether something is organizational, not just one production. And what to do about it &mdash; grounded in what actually worked, not theory.</p>
+
+        <h3>View C: Consultant (HPT Coach) &mdash; "Where do I intervene?"</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Signal</th>
+              <th>Dimension</th>
+              <th>Severity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lucia's deference to Javier</td>
+              <td>Relationships</td>
+              <td>Watch</td>
+              <td>Coached privately. If pattern continues past ep 5, facilitated conversation.</td>
+            </tr>
+            <tr>
+              <td>Unit drift: Toledo vs Madrid</td>
+              <td>Processes</td>
+              <td>Early warning</td>
+              <td>Sync declining. "Los de Madrid" / "los de Toledo" language appearing. Joint meeting recommended.</td>
+            </tr>
+            <tr>
+              <td>Scene approval bypass</td>
+              <td>Roles / Processes</td>
+              <td>Resolved</td>
+              <td>Self-corrected through Elena and Pilar. Monitor for recurrence.</td>
+            </tr>
+            <tr>
+              <td>Art department strain</td>
+              <td>Processes</td>
+              <td>Watch</td>
+              <td>Pulse at 5.3, workload 94%. Elena flagged "prep time" in week 2. If pulse stays low, surface in EP sync.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>The consultant doesn't spend 3 days diagnosing. They see exactly where to spend their 3 hours &mdash; and why. Grounded in the team's own agreements, operational data, and pulse signals. Not surveillance. Patterns that emerged from people coaching themselves.</p>
+
+        <p class="stage-direction">Oseas to the room:</p>
+        <p>"Same system, same data. Pilar sees operations. Sara sees her portfolio. The coach sees where to intervene. Nobody gets information they don't need. Everyone gets what they do. <strong>And nobody's individual behavior is reported upward &mdash; ever.</strong>"</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- After the Demo -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="after-the-demo">
+      <div class="section-inner">
+        <h2>After the Demo</h2>
+
+        <h3>The Pitch Narrative</h3>
+
+        <div class="key-takeaway">"You don't have to remember. We remind you, structurally."</div>
+
+        <blockquote>
+          <p>"These are passionate people who care deeply about the work. The director wants the battle sequence to be extraordinary. The production designer spent months researching medieval scriptoriums. The showrunner wrote scenes he believes in.</p>
+          <p>They don't fail because they don't care. They fail because caring about your piece doesn't automatically mean you see how it affects everyone else's piece.</p>
+          <p>We don't fix that with software. People fix it &mdash; by having the conversations that matter, at the right time, with the right information. Our system makes those conversations easier to start and harder to avoid.</p>
+          <p>The team tells us how they want to work. We remember. We reflect it back &mdash; privately, individually &mdash; when they drift. We surface operational risks before they become crises. And we give the people who need to see the big picture exactly what they need &mdash; patterns and consequences, never surveillance.</p>
+          <p><strong>The learning doesn't live in a report nobody reads. It lives inside the conversation where it matters.</strong> The new AD who lands in week 4 gets oriented in 30 seconds. The team that's about to make the same mistake the last three productions made gets warned &mdash; inside the conversation where they're making the decision.</p>
+          <p>Most problems get resolved with a private nudge and a 30-second action. The ones that can't &mdash; where the pattern is structural or the strain is systemic &mdash; surface precisely on the dashboard for someone with the authority and skill to intervene."</p>
+        </blockquote>
+
+        <h3>The Question We're Preempting</h3>
+
+        <p>The dangerous question: "What did your team build last year?"</p>
+
+        <p>The reframe: We built things that go into enterprises (the CI platform, the coaching product). But what matters now is not what we built &mdash; it's what we should build next. This demo shows we've done the strategic work to know exactly what that is, grounded in methodology that already works, with a market that's bleeding money from the problem we solve.</p>
+
+        <h3>Why This Works (technical credibility)</h3>
+
+        <h4>Three layers of intelligence &mdash; none of them new infrastructure:</h4>
+
+        <ol>
+          <li><strong>Team agreements</strong> &mdash; the four dimensions, in the team's own words. This is the baseline. When the system detects drift, it measures against what the team said, not generic best practices.</li>
+          <li><strong>PLIA's operational data</strong> &mdash; schedule, budget, workload, department allocation. Already collected by 80-100 agents. We add the human-layer interpretation: these operational facts together reveal a coordination gap.</li>
+          <li><strong>Pulse and coaching</strong> &mdash; what individuals flag, how team energy shifts, which patterns emerge over time. The system learns that art department drops precede schedule crises. That approval bypasses cluster in month one. That dual-director setups need early intervention.</li>
+        </ol>
+
+        <p><strong>The moat:</strong> A $10 app can send reminders. A project tool can track schedules. Nobody else has structured team agreements + operational consequence detection + private coaching that compounds organizational knowledge over time.</p>
+
+        <p><strong>The financial case:</strong> Troubled productions trend 15-22% over budget from team dysfunction. On a 15M EUR production: 2.2-3.3M EUR in preventable overruns. Catching the scriptorium gap in week 3 pays for the system many times over.</p>
+
+        <p><strong>The PLIA fit:</strong> PLIA solved the operational layer. We add the human layer on top of the same data. Same clients, complementary value, no new infrastructure.</p>
+
+        <h3>The Honest Constraint</h3>
+
+        <p>We don't fix teams. We don't act on problems. We don't do the hard conversation for you.</p>
+
+        <p>The system does three things:</p>
+        <ol>
+          <li><strong>Remembers</strong> what you agreed to &mdash; when you've forgotten or drifted</li>
+          <li><strong>Reflects</strong> patterns you can't see from inside</li>
+          <li><strong>Asks</strong> &mdash; one question, privately, that you can ignore</li>
+        </ol>
+
+        <div class="key-takeaway">The hard conversation is still hard. We just make it harder to avoid.</div>
+
+        <h3>Beyond Production</h3>
+
+        <p><strong>"Production is where we start. Not where we stop."</strong></p>
+
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Film Production</th>
+              <th>Software</th>
+              <th>Consulting</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>What needs to be done</strong></td>
+              <td>Scripts</td>
+              <td>PRDs / specs</td>
+              <td>SOWs / scopes</td>
+            </tr>
+            <tr>
+              <td><strong>Who does what when</strong></td>
+              <td>Movie Magic</td>
+              <td>Jira / Linear</td>
+              <td>Deliverable trackers</td>
+            </tr>
+            <tr>
+              <td><strong>Resources</strong></td>
+              <td>Movie Magic Budget</td>
+              <td>Roadmaps</td>
+              <td>Time tracking</td>
+            </tr>
+            <tr>
+              <td><strong>Where people talk</strong></td>
+              <td>Google Chat</td>
+              <td>Slack / Teams</td>
+              <td>Email / Teams</td>
+            </tr>
+            <tr>
+              <td style="background: var(--stoic-yellow); font-weight: 700;">What's missing</td>
+              <td style="background: var(--stoic-yellow); font-weight: 700;">The human layer</td>
+              <td style="background: var(--stoic-yellow); font-weight: 700;">The human layer</td>
+              <td style="background: var(--stoic-yellow); font-weight: 700;">The human layer</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>The human problem is the same everywhere: people drift from what they agreed, assumptions go unvalidated, misalignment festers until it costs you. Production is where we start because PLIA gives us the data and Axialent gives us the methodology. The team agreement, the coaching, and the trust architecture are industry-agnostic.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- Design Principles -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="section" id="design-principles">
+      <div class="section-inner">
+        <h2>Design Principles</h2>
+
+        <ul>
+          <li><strong>You don't have to remember. We remind you, structurally.</strong> &mdash; The system carries the weight of remembering agreements, patterns, and lessons. People carry the weight of acting.</li>
+          <li><strong>The learning lives in the conversation, not in a report</strong> &mdash; Cross-production knowledge surfaces when the team is making the decision, not in a document filed after the fact.</li>
+          <li><strong>Hook first, explain second</strong> &mdash; lead with the product moment, earn the right to explain the architecture</li>
+          <li><strong>The individual always knows first</strong> &mdash; coaching is private, consequences are public, behavior never is</li>
+          <li><strong>Self-interest + amor al arte, not consciousness</strong> &mdash; the system tells you the thing you care about is at risk</li>
+          <li><strong>We don't act</strong> &mdash; the system remembers, reflects, and asks. Then it waits.</li>
+          <li><strong>No new infrastructure</strong> &mdash; PLIA's data already exists. We add the human-layer interpretation.</li>
+          <li><strong>Two layers, one system</strong> &mdash; Layer 1 for individuals (scalable), Layer 2 for execs/consultants (targeted)</li>
+          <li><strong>Sara has 5-10 min max</strong> &mdash; the nudge is 30 seconds, the dashboard is a 2-minute glance</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Derived from: Product Thesis v2 (Mar 6) + Demo Flow v1 (Mar 5) + Oseas-Ruy 1-1 (Mar 5) + Strategic session (Mar 6). Prototype target: end of March.</p>
+      <p style="margin-top:0.5rem;">PLIA Teams &middot; Stoic Enterprises &middot; 2026</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
