@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V0 Technical Spec &mdash; For Mike | Stoic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+      --section-alt: #fafafa;
+      --max-width: 700px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 16px; line-height: 1.7; color: var(--black); background: var(--base-white); }
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--base-white); border-bottom: 3px solid var(--stoic-yellow); display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; font-family: 'Montserrat Alternates', sans-serif; }
+    .top-bar .logo { font-weight: 700; font-size: 1.25rem; letter-spacing: 0.05em; color: var(--black); }
+    .top-bar .doc-label { font-weight: 600; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    .back-link { display: block; margin-top: 70px; padding: 0.75rem 2rem; font-size: 0.9rem; color: var(--stoic-red); text-decoration: none; font-weight: 500; max-width: var(--max-width); margin-left: auto; margin-right: auto; }
+    .back-link:hover { text-decoration: underline; }
+    .hero { text-align: center; padding: 3rem 2rem 2.5rem; background: var(--base-white); }
+    .hero h1 { font-family: 'Montserrat Alternates', sans-serif; font-weight: 700; font-size: 2.4rem; margin-bottom: 0.5rem; color: var(--black); }
+    .hero .subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 400; }
+    .hero .meta { margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+    .hero .meta span { margin: 0 0.75rem; }
+    .section { padding: 3rem 2rem; }
+    .section:nth-child(even) { background: var(--section-alt); }
+    .section:nth-child(odd) { background: var(--base-white); }
+    .section-inner { max-width: var(--max-width); margin: 0 auto; }
+    h2 { font-family: 'Montserrat Alternates', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--black); padding-bottom: 0.5rem; border-bottom: 3px solid var(--stoic-yellow); }
+    h3 { font-family: 'Montserrat Alternates', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--stoic-red); margin-top: 2rem; margin-bottom: 0.75rem; }
+    h4 { font-family: 'Montserrat Alternates', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    strong { font-weight: 700; }
+    table { width: 100%; max-width: var(--max-width); border-collapse: collapse; margin: 1.25rem 0; font-size: 0.95rem; }
+    thead th { background: var(--black); color: var(--base-white); padding: 0.75rem 1rem; text-align: left; font-weight: 600; }
+    tbody td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--stoic-gray); }
+    tbody tr:hover { background: #f5f5f5; }
+    code { background: #f0f0f0; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9rem; }
+    .emphasis { background: var(--stoic-yellow); border-radius: 10px; padding: 1.5rem 2rem; margin: 1.5rem 0; }
+    .emphasis p { color: var(--black); font-weight: 600; margin: 0; font-size: 1.05rem; }
+    .workflow { background: var(--section-alt); border: 1px solid var(--stoic-gray); border-radius: 8px; padding: 1.5rem 2rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.9rem; line-height: 1.8; white-space: pre-line; }
+    .skill-card { border: 1px solid var(--stoic-gray); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--base-white); border-left: 4px solid var(--stoic-yellow); }
+    .skill-card h4 { margin-top: 0; color: var(--black); }
+    .skill-card ul { margin-bottom: 0; }
+    .blocker { background: #fff0f0; border: 1px solid var(--stoic-red); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .blocker p { margin: 0; }
+    .footer { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--stoic-gray); }
+    @media (max-width: 600px) { .hero h1 { font-size: 1.8rem; } h2 { font-size: 1.5rem; } .top-bar { padding: 0.5rem 1rem; } .section { padding: 2rem 1rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="logo">Stoic</div>
+    <div class="doc-label">TECHNICAL SPEC</div>
+  </div>
+
+  <a href="quinto-miembro-v0.html" class="back-link">&larr; Back to Build Spec</a>
+
+  <div class="hero">
+    <h1>V0 Technical Spec</h1>
+    <p class="subtitle">For Mike &mdash; What to build in OpenClaw</p>
+    <p class="meta">
+      <span>March 18, 2026</span> &middot;
+      <span>Target: Friday March 21</span>
+    </p>
+  </div>
+
+  <!-- BLOCKER -->
+  <div class="section" id="blocker">
+    <div class="section-inner">
+      <h2>Blocker</h2>
+      <div class="blocker">
+        <p><strong>Mike: add Ruy&rsquo;s SSH keys to the Vultr server.</strong> Once that&rsquo;s done, Ruy can start building the skills and Telos files directly in OpenClaw.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILES -->
+  <div class="section" id="files">
+    <div class="section-inner">
+      <h2>Files (the Telos &mdash; flat Markdown)</h2>
+
+      <table>
+        <thead>
+          <tr><th>File</th><th>Content</th><th>Who creates</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>telos-team.md</code></td><td>Purpose, goals, challenges of the team</td><td>Ruy (from AI interviews + hackathon)</td></tr>
+          <tr><td><code>telos-company.md</code></td><td>Strategic chain: Axialent, Stoic, PLIA, what we&rsquo;re testing</td><td>Ruy</td></tr>
+          <tr><td><code>telos-members.md</code></td><td>Each member: role, goals, challenges</td><td>Ruy (AI interviews each person)</td></tr>
+          <tr><td><code>transcripts/</code></td><td>Meeting transcripts, uploaded manually</td><td>Whoever convened the meeting</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section" id="skills">
+    <div class="section-inner">
+      <h2>Skills (3 total)</h2>
+
+      <div class="skill-card">
+        <h4>1. <code>/analyze</code> &mdash; Meeting analysis</h4>
+        <ul>
+          <li><strong>Reads:</strong> transcript + all Telos files</li>
+          <li><strong>Lenses:</strong> Katzenbach (Purpose, Roles, Relationships, Processes)</li>
+          <li><strong>Outputs:</strong> 2 content observations + 2 performance observations (individual + team)</li>
+          <li><strong>Rule:</strong> &ldquo;I noticed&rdquo; language, never &ldquo;this happened&rdquo; or &ldquo;decided&rdquo;</li>
+          <li><strong>Rule:</strong> every observation must reference a Telos goal/challenge &mdash; no generic insights</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h4>2. <code>/fifth-member</code> &mdash; Mentor perspective</h4>
+        <ul>
+          <li><strong>Reads:</strong> transcript + all Telos files + output from <code>/analyze</code></li>
+          <li><strong>Persona:</strong> startup mentor (Paul Graham initially, swappable)</li>
+          <li><strong>Outputs:</strong> 1 perspective that counterweights what the team needs</li>
+          <li>If we&rsquo;re over-analyzing &rarr; pushes action. If we&rsquo;re rushing &rarr; pulls back.</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h4>3. <code>/correct</code> &mdash; Correction handler</h4>
+        <ul>
+          <li><strong>Triggered by:</strong> Telegram reply (&ldquo;that wasn&rsquo;t a decision, just an idea&rdquo; / &ldquo;wrong, what actually happened is X&rdquo;)</li>
+          <li><strong>Does:</strong> updates the relevant Telos file or adds a note to the transcript context</li>
+          <li><strong>Confirms back:</strong> &ldquo;Updated. Next analysis will reflect this.&rdquo;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW -->
+  <div class="section" id="workflow">
+    <div class="section-inner">
+      <h2>Workflow (post-meeting)</h2>
+      <div class="workflow">Ruy uploads transcript to transcripts/
+        &darr;
+  /analyze (reads transcript + Telos)
+        &darr;
+  /fifth-member (reads transcript + Telos + analysis)
+        &darr;
+  Format as digest &rarr; send to Telegram group
+        &darr;
+  Members reply with corrections &rarr; /correct updates files</div>
+    </div>
+  </div>
+
+  <!-- CONTEXT SOURCE -->
+  <div class="section" id="context">
+    <div class="section-inner">
+      <h2>Context Source Material</h2>
+
+      <p>Ruy processes and distills the Telos files from the Axialent/Stoic content pack:</p>
+
+      <ul>
+        <li><code>01_AXIALENT_OVERVIEW.md</code> &mdash; company context</li>
+        <li><code>02_CONSCIOUS_BUSINESS_FRAMEWORK.md</code> &mdash; methodology</li>
+        <li><code>03_AXIALENT_OFFERING.md</code> &mdash; what Axialent does</li>
+        <li><code>04_STOIC_OVERVIEW.md</code> &mdash; Stoic context</li>
+        <li><code>05_MARKET_AND_COMPETITIVE.md</code> &mdash; market positioning</li>
+        <li><code>06_STOIC_PRODUCT_VISION.md</code> &mdash; product direction</li>
+        <li><code>07_ANALYSIS_FRAMEWORKS.md</code> &mdash; analytical lenses</li>
+        <li><code>08_TEAM_PAI_ARCHITECTURE.md</code> &mdash; team AI architecture</li>
+      </ul>
+
+      <p>These get distilled into the 3 Telos files &mdash; not uploaded raw. The agent needs curated context, not a document dump.</p>
+    </div>
+  </div>
+
+  <!-- ONBOARDING -->
+  <div class="section" id="onboarding">
+    <div class="section-inner">
+      <h2>Onboarding Flow</h2>
+
+      <p>Once Ruy has the draft Telos files, each team member does a short AI-guided conversation (via Telegram or OpenClaw chat):</p>
+
+      <h3>Step 1: Validate the team Telos (~5 min)</h3>
+      <p>The agent shows the team purpose, goals, and challenges and asks: &ldquo;Does this match your understanding? What&rsquo;s missing or wrong?&rdquo; Each member&rsquo;s corrections refine the shared Telos before any analysis runs.</p>
+
+      <h3>Step 2: Individual interview (~10 min)</h3>
+      <p>The agent asks each member:</p>
+      <ul>
+        <li>What&rsquo;s your role on this team? What are you responsible for?</li>
+        <li>What are your personal goals for this work?</li>
+        <li>What&rsquo;s the biggest challenge or risk you see right now?</li>
+        <li>When the team isn&rsquo;t working well, what does it look like?</li>
+      </ul>
+
+      <p>Their answers populate <code>telos-members.md</code> &mdash; the individual layer of context.</p>
+
+      <div class="emphasis">
+        <p>This is also the first product experience. The onboarding IS the prototype of the team agreement process from the thesis. If the team finds the conversation valuable, that&rsquo;s signal. If it feels like a chore, that&rsquo;s signal too.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Hackathon Day 1 &middot; March 18, 2026 &middot; PLIA Teams</p>
+    <p style="margin-top: 0.5rem;"><a href="quinto-miembro-v0.html" style="color: var(--stoic-red); text-decoration: none; font-weight: 500;">&larr; Build Spec</a></p>
+  </div>
+
+</body>
+</html>
