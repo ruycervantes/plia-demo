@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quinto Miembro &mdash; V0 Build Spec | Stoic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --stoic-yellow: #FFD500;
+      --stoic-red: #C9332B;
+      --stoic-gray: #E6E6E6;
+      --base-white: #FFFFFF;
+      --black: #000000;
+      --text-secondary: #444;
+      --text-muted: #666;
+      --section-alt: #fafafa;
+      --max-width: 700px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--base-white);
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--base-white);
+      border-bottom: 3px solid var(--stoic-yellow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat Alternates', sans-serif;
+    }
+    .top-bar .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      color: var(--black);
+    }
+    .top-bar .doc-label {
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 70px;
+      padding: 0.75rem 2rem;
+      font-size: 0.9rem;
+      color: var(--stoic-red);
+      text-decoration: none;
+      font-weight: 500;
+      max-width: var(--max-width);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem 2.5rem;
+      background: var(--base-white);
+    }
+    .hero h1 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+      color: var(--black);
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+    .hero .meta {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .hero .meta span {
+      margin: 0 0.75rem;
+    }
+
+    .section {
+      padding: 3rem 2rem;
+    }
+    .section:nth-child(even) { background: var(--section-alt); }
+    .section:nth-child(odd) { background: var(--base-white); }
+    .section-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--black);
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--stoic-yellow);
+    }
+    h3 {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--stoic-red);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    strong { font-weight: 700; }
+
+    blockquote {
+      border-left: 4px solid var(--stoic-red);
+      padding: 1rem 1.5rem;
+      background: var(--section-alt);
+      font-style: italic;
+      margin: 1.25rem 0;
+      border-radius: 0 6px 6px 0;
+      color: var(--text-secondary);
+    }
+
+    .emphasis {
+      background: var(--stoic-yellow);
+      border-radius: 10px;
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+    }
+    .emphasis p {
+      color: var(--black);
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    table {
+      width: 100%;
+      max-width: var(--max-width);
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.95rem;
+    }
+    thead th {
+      background: var(--black);
+      color: var(--base-white);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    tbody td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--stoic-gray);
+    }
+    tbody tr:hover { background: #f5f5f5; }
+
+    .moat-card {
+      border: 1px solid var(--stoic-gray);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+      background: var(--base-white);
+    }
+    .moat-card.zero { border-left: 4px solid #ccc; }
+    .moat-card.some { border-left: 4px solid var(--stoic-yellow); }
+    .moat-card.deep { border-left: 4px solid var(--stoic-red); background: #fff8f7; }
+    .moat-card .level {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .moat-card p { margin-bottom: 0; }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--stoic-gray);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .top-bar { padding: 0.5rem 1rem; }
+      .section { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="logo">Stoic</div>
+    <div class="doc-label">V0 BUILD SPEC</div>
+  </div>
+
+  <a href="index.html" class="back-link">&larr; Back to Hub</a>
+
+  <div class="hero">
+    <h1>The 5th Team Member</h1>
+    <p class="subtitle">V0 Build Spec &mdash; Hackathon Day 1</p>
+    <p class="meta">
+      <span>March 18, 2026</span> &middot;
+      <span>Target: Friday March 21</span> &middot;
+      <span>Oseas &middot; Leo &middot; Mike &middot; Ruy</span>
+    </p>
+  </div>
+
+  <!-- WHAT WE'RE PROVING -->
+  <div class="section" id="proving">
+    <div class="section-inner">
+      <h2>What We're Proving</h2>
+
+      <p><strong>V0 proves desirability only.</strong> Does the digest make people see themselves or the team differently? If it only tells you what you already knew &mdash; it failed.</p>
+
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Audience</th><th>Testing</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>V0</strong></td><td>Us (4 people)</td><td>Does the subject-object shift work?</td></tr>
+          <tr><td>Focus Group</td><td>Enterprise leaders (AXA, Revolut, etc.)</td><td>Who pays? What pain? Design partners.</td></tr>
+          <tr><td>Fanatics</td><td>Real client (consulting gig)</td><td>Will someone pay for this in consulting?</td></tr>
+          <tr><td>PLIA</td><td>Investors</td><td>Evidence to confirm the company.</td></tr>
+        </tbody>
+      </table>
+
+      <p>Each step de-risks the next.</p>
+    </div>
+  </div>
+
+  <!-- WHAT IT DOES -->
+  <div class="section" id="does">
+    <div class="section-inner">
+      <h2>What It Does</h2>
+
+      <p>After every meeting, push a Telegram digest with:</p>
+      <ol>
+        <li><strong>2 content observations</strong> &mdash; what happened, anchored to team purpose/goals</li>
+        <li><strong>2 performance observations</strong> &mdash; individual + team dynamics</li>
+        <li><strong>5th member perspective</strong> &mdash; counterweights what the team needs (pushes action when over-analyzing, questions us when rushing)</li>
+      </ol>
+
+      <div class="emphasis">
+        <p>The loop: transcript &rarr; AI + Telos context &rarr; digest &rarr; members correct via voice note &rarr; corrections update context &rarr; next digest is better.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT MATTERS -->
+  <div class="section" id="matters">
+    <div class="section-inner">
+      <h2>What Matters for Building</h2>
+
+      <h3>Anchored or it's Firefly</h3>
+      <p>What made Oseas say &ldquo;you have my attention&rdquo; wasn&rsquo;t the summary &mdash; it was that the AI knew what we&rsquo;re trying to do and measured us against it. Without the team&rsquo;s purpose/goals/challenges as context, it&rsquo;s a meeting summary. With them, it says &ldquo;you spent 80% on architecture and 0% on the customer &mdash; and the focus group is in 10 days.&rdquo;</p>
+
+      <h3>Corrections can't be optional</h3>
+      <p>The AI will misinterpret &mdash; &ldquo;I think we should&rdquo; becomes &ldquo;decided.&rdquo; If that accumulates uncorrected, every future digest builds on errors and people stop speaking freely. V0 rule: &ldquo;I noticed&rdquo; language, never &ldquo;this happened.&rdquo; Convener spends 10 min after each meeting correcting.</p>
+
+      <h3>Context has to evolve</h3>
+      <p>If week 1&rsquo;s context is all the system knows in week 4, the output goes generic and people stop reading. Corrections feed back into context files. The Telos changes as we change. This is the core mechanism, not a V2 feature.</p>
+    </div>
+  </div>
+
+  <!-- VERSION ARC -->
+  <div class="section" id="versions">
+    <div class="section-inner">
+      <h2>Where This Goes</h2>
+
+      <table>
+        <thead>
+          <tr><th>V</th><th>What it adds</th><th>What it proves</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>V0</strong></td><td>Manual transcript &rarr; digest via Telegram</td><td>Desirability: does the mirror work?</td></tr>
+          <tr><td>V1</td><td>+ voice + 5th member as richer expert</td><td>Desirability at higher fidelity</td></tr>
+          <tr><td>V2</td><td>+ automatic transcripts</td><td>Feasibility: can the loop run without Ruy?</td></tr>
+          <tr><td>V3</td><td>+ automatic emails (BCC)</td><td>More dynamic context sources</td></tr>
+          <tr><td>V4</td><td>+ individual Telos, expert catalog, digital twins</td><td>Full living loop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- THE DIFFERENTIATOR -->
+  <div class="section" id="differentiator">
+    <div class="section-inner">
+      <h2>The Differentiator</h2>
+
+      <p>People buy the 5th team member &mdash; the coach, the digest, the perspective shift. <strong>But the reason they stay is because it actually knows them. It gets better. It remembers.</strong></p>
+
+      <p>Week 1, any AI tool gives a decent summary. Week 8, every other tool still treats each meeting like it&rsquo;s the first. Ours knows Leo raised this 6 weeks ago, Oseas killed it in week 3, and it&rsquo;s back because conditions changed.</p>
+
+      <div class="moat-card zero">
+        <p class="level">Zero moat</p>
+        <p>Transcript &rarr; digest. Everyone does this. GPT, Claude, Firefly, Otter.</p>
+      </div>
+
+      <div class="moat-card some">
+        <p class="level">Some moat</p>
+        <p>Context-aware digest. Telos + history make the output specific and personal.</p>
+      </div>
+
+      <div class="moat-card deep">
+        <p class="level">The differentiator</p>
+        <p><strong>Context that stays correct over time with human validation.</strong> Nobody does this. It&rsquo;s why they use us and not the next AI tool.</p>
+      </div>
+
+      <h3>The design problem we need to own</h3>
+
+      <p><strong>How do humans validate AI&rsquo;s understanding &mdash; naturally, quickly, without it feeling like work?</strong></p>
+
+      <p>Forms &rarr; nobody fills them. Dashboards &rarr; nobody visits. Our answer: <strong>you talk to it.</strong> Voice note to the 5th member: &ldquo;you got this right, but that wasn&rsquo;t a decision.&rdquo; Next time, it&rsquo;s smarter.</p>
+
+      <p>The correction loop isn&rsquo;t a side feature. It&rsquo;s the core interaction that makes the context trustworthy and the AI useful over time.</p>
+
+      <h3>V0 tests three things</h3>
+      <ol>
+        <li>Do people actually correct the AI? (Or ignore it?)</li>
+        <li>Does week 2&rsquo;s digest improve from week 1&rsquo;s corrections?</li>
+        <li>Does it feel like talking to a teammate, not filling out a form?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- NOT BUILDING -->
+  <div class="section" id="not-building">
+    <div class="section-inner">
+      <h2>What We're NOT Building in V0</h2>
+      <p>No dashboard, no automatic transcripts, no individual Telos, no knowledge graph, no access control. Manual upload, text files, shared context, 4 trusted people.</p>
+    </div>
+  </div>
+
+  <!-- WORK SPLIT -->
+  <div class="section" id="work">
+    <div class="section-inner">
+      <h2>Work Split</h2>
+
+      <table>
+        <thead>
+          <tr><th>Who</th><th>What</th><th>By when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Ruy</strong></td><td>Report format + prompt architecture, team Telos context docs, pass to Mike</td><td>Wed Mar 19</td></tr>
+          <tr><td><strong>Mike</strong></td><td>OpenClaw agent, Telegram bot, transcript ingestion</td><td>Fri Mar 21</td></tr>
+          <tr><td><strong>Leo</strong></td><td>Focus group agenda, questions, Mentimeter</td><td>Thu-Fri</td></tr>
+          <tr><td><strong>All</strong></td><td>Test with first real transcript</td><td>Fri Mar 21</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Hackathon Day 1 &middot; March 18, 2026 &middot; PLIA Teams</p>
+  </div>
+
+</body>
+</html>
