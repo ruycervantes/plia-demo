@@ -266,6 +266,7 @@ const EDGE_TYPES = [
   { id: 'constrains', label: 'constrains', color: '#f85149', dash: [6, 4] },
   { id: 'compounds', label: 'compounds', color: '#d2a8ff', dash: [] },
   { id: 'validates', label: 'validates', color: '#d29922', dash: [4, 4] },
+  { id: 'informs', label: 'informs', color: '#8b5cf6', dash: [8, 4] },
 ];
 
 const NODES_DATA = [
@@ -402,7 +403,7 @@ const DEFAULT_EDGES = [
   { from: 'hci', to: 'sara-dashboard', type: 'informs' },
   { from: 'cscw', to: 'team-agreement', type: 'informs' },
   { from: 'cscw', to: 'ops-context', type: 'informs' },
-  { from: 'cscw', to: 'pulse-survey', type: 'informs' },
+  { from: 'cscw', to: 'pulse', type: 'informs' },
   { from: 'research-advantage', to: 'we-dont-act', type: 'compounds' },
 ];
 
@@ -413,8 +414,7 @@ const PRESETS = {
   'Trust Layer': { layers: ['trust', 'experience'], description: 'How trust shapes the product' },
   'Strategy': { layers: ['moat', 'scaling'], description: 'Moat, scaling, and competitive position' },
   'Quality Stack': { layers: ['quality', 'experience'], description: 'How we know the engine works + what users see' },
-  'Research': { layers: ['research', 'engine'], description: 'Research foundations informing the core engine' },
-  'Full Map': { layers: Object.keys(layers), description: 'All layers visible' },
+  'Research': { layers: ['research', 'intelligence', 'experience'], description: 'Research foundations informing the product' },
 };
 
 // State
