@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLIA Teams — Product Concept Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    padding: 12px 20px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .header h1 { font-size: 16px; font-weight: 600; color: #f0f6fc; }
+  .header .subtitle { font-size: 12px; color: #8b949e; }
+  .main { display: flex; flex: 1; overflow: hidden; }
+  .canvas-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+    cursor: grab;
+  }
+  canvas.dragging { cursor: grabbing; }
+  canvas.connecting { cursor: crosshair; }
+  .tooltip {
+    position: absolute;
+    background: #1c2128;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    max-width: 280px;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+    line-height: 1.5;
+  }
+  .tooltip .tt-title { font-weight: 600; color: #f0f6fc; margin-bottom: 4px; }
+  .tooltip .tt-desc { color: #8b949e; }
+  .tooltip .tt-level { margin-top: 6px; font-size: 11px; }
+  .sidebar {
+    width: 320px;
+    background: #161b22;
+    border-left: 1px solid #30363d;
+    overflow-y: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-section {
+    padding: 14px 16px;
+    border-bottom: 1px solid #30363d;
+  }
+  .sidebar-section h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8b949e;
+    margin-bottom: 10px;
+  }
+  .preset-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 4px 4px 0;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-btn:hover { background: #30363d; border-color: #58a6ff; }
+  .preset-btn.active { background: #1f6feb33; border-color: #58a6ff; color: #58a6ff; }
+  .node-list { list-style: none; }
+  .node-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    margin-bottom: 2px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .node-item:hover { background: #21262d; }
+  .node-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .node-name { flex: 1; }
+  .knowledge-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .knowledge-badge.know { background: #23863633; color: #3fb950; }
+  .knowledge-badge.fuzzy { background: #d2992233; color: #d29922; }
+  .knowledge-badge.unknown { background: #f8514933; color: #f85149; }
+  .edge-type-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .edge-type-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .edge-type-btn:hover { color: #c9d1d9; }
+  .edge-type-btn.active { border-color: #58a6ff; color: #58a6ff; background: #1f6feb22; }
+  .action-btn {
+    padding: 6px 12px;
+    margin: 0 4px 4px 0;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .action-btn:hover { background: #30363d; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #8b949e; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .prompt-area {
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .prompt-text {
+    flex: 1;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 11px;
+    color: #8b949e;
+    line-height: 1.5;
+    max-height: 80px;
+    overflow-y: auto;
+  }
+  .copy-btn {
+    padding: 6px 14px;
+    background: #238636;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: #2ea043; }
+  .copy-btn.copied { background: #1f6feb; }
+  .filter-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+  .filter-btn {
+    padding: 3px 8px;
+    font-size: 11px;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #8b949e;
+    cursor: pointer;
+  }
+  .filter-btn.active { border-color: #58a6ff; color: #58a6ff; }
+  .edge-count { font-size: 10px; color: #484f58; margin-left: auto; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>PLIA Teams — Product Concept Map</h1>
+  <span class="subtitle">Drag nodes to arrange. Click to cycle knowledge level. Draw edges between concepts.</span>
+</div>
+
+<div class="main">
+  <div class="canvas-area">
+    <canvas id="canvas"></canvas>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <h3>Presets</h3>
+      <div id="presets"></div>
+    </div>
+    <div class="sidebar-section">
+      <h3>Filter by Layer</h3>
+      <div class="filter-row" id="filters"></div>
+    </div>
+    <div class="sidebar-section">
+      <h3>Edge Type (for drawing)</h3>
+      <div class="edge-type-selector" id="edgeTypes"></div>
+    </div>
+    <div class="sidebar-section">
+      <h3>Concepts</h3>
+      <ul class="node-list" id="nodeList"></ul>
+    </div>
+    <div class="sidebar-section">
+      <h3>Legend</h3>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="sidebar-section">
+      <h3>Actions</h3>
+      <button class="action-btn" onclick="autoLayout()">Auto-layout</button>
+      <button class="action-btn" onclick="clearEdges()">Clear edges</button>
+      <button class="action-btn" onclick="resetKnowledge()">Reset knowledge</button>
+      <button class="action-btn" onclick="showAll()">Show all</button>
+    </div>
+  </div>
+</div>
+
+<div class="prompt-area">
+  <div class="prompt-text" id="prompt">Adjust knowledge levels and draw connections to generate a learning prompt.</div>
+  <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy</button>
+</div>
+
+<script>
+const LAYERS = {
+  intelligence: { label: 'Intelligence Sources', color: '#58a6ff' },
+  experience: { label: 'User Experience', color: '#3fb950' },
+  trust: { label: 'Trust Architecture', color: '#d2a8ff' },
+  moat: { label: 'Moat & Strategy', color: '#f0883e' },
+  scaling: { label: 'Scaling & Operations', color: '#f778ba' },
+  quality: { label: 'Quality & Observability', color: '#d29922' },
+  research: { label: 'Research Foundations', color: '#8b5cf6' },
+};
+
+const LAYER_COLORS = Object.fromEntries(Object.entries(LAYERS).map(([k,v]) => [k, v.color]));
+
+const KNOWLEDGE_LEVELS = ['fuzzy', 'know', 'unknown'];
+const KNOWLEDGE_LABELS = { know: 'Know', fuzzy: 'Fuzzy', unknown: '?' };
+const KNOWLEDGE_COLORS = { know: '#3fb950', fuzzy: '#d29922', unknown: '#f85149' };
+
+const EDGE_TYPES = [
+  { id: 'feeds', label: 'feeds into', color: '#58a6ff', dash: [] },
+  { id: 'enables', label: 'enables', color: '#3fb950', dash: [] },
+  { id: 'constrains', label: 'constrains', color: '#f85149', dash: [6, 4] },
+  { id: 'compounds', label: 'compounds', color: '#d2a8ff', dash: [] },
+  { id: 'validates', label: 'validates', color: '#d29922', dash: [4, 4] },
+];
+
+const NODES_DATA = [
+  // Intelligence Sources
+  { id: 'ontology', label: 'Ontology', layer: 'intelligence',
+    desc: 'Cross-team behavioral knowledge seeded by consultant-engineer. Includes 20+ years of Axialent methodology. Compounds with every production.' },
+  { id: 'team-agreement', label: 'Team Agreement', layer: 'intelligence',
+    desc: 'Living document built through progressive onboarding. AI preps individuals async, consultant leads kickoff. The baseline for drift detection.' },
+  { id: 'ops-context', label: 'Operational Context', layer: 'intelligence',
+    desc: 'Scoped integration with client tools (PLIA, Jira, etc.). Minimum slice: milestones, deliverables, key moments. Not full data ingest.' },
+  { id: 'pulse', label: 'Milestone-Triggered Pulse', layer: 'intelligence',
+    desc: 'Private check-ins triggered by business milestones, not calendars. Agreement-grounded questions. Anonymous aggregates reach dashboard.' },
+
+  // User Experience
+  { id: 'private-coach', label: 'Private AI Coach', layer: 'experience',
+    desc: '5 modes: onboarding prep, agreement check-ins, reflection-based, milestone-aware, workload-aware. Remembers what you said, asks one question, waits.' },
+  { id: 'sara-dashboard', label: "Sara's Dashboard", layer: 'experience',
+    desc: 'Multi-production overview. Shows consequences and patterns, never individual behavior. Three views: executive, line producer, consultant.' },
+  { id: 'onboarding-convo', label: 'Onboarding Conversation', layer: 'experience',
+    desc: 'First coaching interaction. AI learns what matters to you while surfacing org lessons. ~15 min, async, on phone.' },
+  { id: 'coaching-nudge', label: 'Coaching Nudge', layer: 'experience',
+    desc: 'Private, contextual prompt based on your own words and patterns. "You said rushed twice in three weeks. What is driving that?"' },
+  { id: 'kickoff-session', label: 'Kickoff Session', layer: 'experience',
+    desc: 'Human-facilitated ~2 hours. Consultant arrives already informed. Result: living team agreement in the team\'s own words.' },
+
+  // Trust Architecture
+  { id: 'individual-first', label: 'Individual Knows First', layer: 'trust',
+    desc: 'If the system notices something, it tells YOU before anyone else. Marcos bypassing approvals? Marcos gets the nudge first.' },
+  { id: 'coaching-private', label: 'Coaching is Private', layer: 'trust',
+    desc: 'Technical wall, not policy. Management never sees individual coaching data. Conversations, reflections, pulse belong to you.' },
+  { id: 'anon-aggregation', label: 'Anonymous Aggregation', layer: 'trust',
+    desc: 'Dashboard shows "art dept energy dropped from 8 to 5" — never "Elena said 5." Patterns surface, not people.' },
+  { id: 'grudins-law', label: "Grudin's Law", layer: 'trust',
+    desc: 'If the people doing the work don\'t get direct personal benefit, they won\'t use it. Every interaction must give value to the individual.' },
+
+  // Moat & Strategy
+  { id: 'ontology-moat', label: 'Ontology Compounds', layer: 'moat',
+    desc: 'By the 10th production, the system knows things no consultant remembers. By the 50th team across industries: organizational wisdom.' },
+  { id: 'methodology', label: 'Axialent Methodology', layer: 'moat',
+    desc: '20+ years of HPT process structured into architecture. Not a static framework — a living engine. Composable with Lencioni, Tuckman, others.' },
+  { id: 'trust-relationship', label: 'Trust Relationship', layer: 'moat',
+    desc: 'Individuals share because the system proved value first and kept data private always. Takes months to build, can\'t be bootstrapped by new entrants.' },
+  { id: '80-20', label: '80/20 Hypothesis', layer: 'moat',
+    desc: 'Ontology + agreement + pulse + scoped ops context + human coach = enough to catch problems early? This is the pareto question to validate.' },
+  { id: 'we-dont-act', label: "We Don't Act", layer: 'moat',
+    desc: 'The system remembers, reflects, asks. Never acts, never escalates without knowledge, never does the hard conversation for you. Mirror, not agent.' },
+
+  // Scaling & Operations
+  { id: 'consultant-model', label: '1 Consultant : N Productions', layer: 'scaling',
+    desc: 'Seeds ontology once per client. Reviews AI synthesis. Shows up for kickoffs and judgment calls. AI does daily coaching, nudges, pulse.' },
+  { id: 'pluggable-arch', label: 'Pluggable Architecture', layer: 'scaling',
+    desc: 'Same engine, any industry. Film → Software → Consulting. What changes: operational data source and domain ontology seed.' },
+  { id: 'four-quadrants', label: 'Four Quadrants', layer: 'scaling',
+    desc: 'Purpose, Roles, Processes, Relationships. The team agreement covers all four. Coaching and drift detection organized around them.' },
+  { id: 'cross-prod-learning', label: 'Cross-Production Learning', layer: 'scaling',
+    desc: '"In 3 of the last 5 productions, scene approval bypasses happened in month 1." Lessons live inside conversations, not reports.' },
+
+  // Quality & Observability
+  { id: 'llm-judge', label: 'LLM-as-Judge', layer: 'quality',
+    desc: 'A second LLM scores the coach\'s interpretations. Manual calibration first (humans review), gradual automation as ground truth accumulates. The system watching itself.' },
+  { id: 'interpretation-trace', label: 'Interpretation Traceability', layer: 'quality',
+    desc: 'Every LLM interpretation shows its evidence: "I identified X based on Y text." Visible internally, eventually to coaches. Without this, errors compound invisibly.' },
+  { id: 'synthetic-users', label: 'Synthetic Users', layer: 'quality',
+    desc: '100+ generated users with profiles, teams, orgs. Chat-vs-chat simulation against the AI coach. Tests prompts, models, temperature, memory, and context pipeline end-to-end.' },
+  { id: 'memory-at-scale', label: 'Memory at Scale', layer: 'quality',
+    desc: 'Many users, long time horizons, organizational documents. Current solutions degrade after ~2 months. Dedicated investment from day one. Research: Super Memory, Mem0, Cognee.' },
+  { id: 'epistemic-humility', label: 'Epistemic Humility', layer: 'quality',
+    desc: 'Everything the system says is provisional. Users reject, correct, regenerate. The coach never asserts truth. Better fewer interventions that provoke thought than many dismissed.' },
+
+  // Research Foundations
+  { id: 'behavioral-science', label: 'Behavioral Science', layer: 'research',
+    desc: 'Habit formation, motivation, cognitive bias, nudge design. Coaching interventions must work WITH cognitive patterns — when to surface a gap, how to frame it, what makes someone act vs. dismiss.' },
+  { id: 'hci', label: 'Human-Computer Interaction', layer: 'research',
+    desc: 'Interaction design, user mental models, trust calibration in AI systems. How humans build trust with AI agents. When transparency helps vs. overwhelms. Epistemic humility as UX.' },
+  { id: 'cscw', label: 'CSCW', layer: 'research',
+    desc: 'Computer-Supported Cooperative Work. Group dynamics mediated by technology, shared awareness, coordination mechanisms. Teams don\'t work how org charts say. Research on mutual awareness and coordination breakdowns informs the team context layer.' },
+  { id: 'research-advantage', label: 'Research as Moat', layer: 'research',
+    desc: 'Most AI coaching products are built by engineers with LLMs. The hard problems — changing behavior, building trust, making teams work — are human problems with decades of research. Taking that research seriously is our advantage.' },
+];
+
+const DEFAULT_EDGES = [
+  { from: 'ontology', to: 'onboarding-convo', type: 'feeds' },
+  { from: 'ontology', to: 'private-coach', type: 'feeds' },
+  { from: 'ontology', to: 'sara-dashboard', type: 'feeds' },
+  { from: 'team-agreement', to: 'private-coach', type: 'feeds' },
+  { from: 'team-agreement', to: 'coaching-nudge', type: 'enables' },
+  { from: 'ops-context', to: 'pulse', type: 'feeds' },
+  { from: 'ops-context', to: 'sara-dashboard', type: 'feeds' },
+  { from: 'pulse', to: 'private-coach', type: 'feeds' },
+  { from: 'pulse', to: 'sara-dashboard', type: 'feeds' },
+  { from: 'onboarding-convo', to: 'team-agreement', type: 'feeds' },
+  { from: 'onboarding-convo', to: 'kickoff-session', type: 'feeds' },
+  { from: 'kickoff-session', to: 'team-agreement', type: 'enables' },
+  { from: 'individual-first', to: 'coaching-nudge', type: 'constrains' },
+  { from: 'coaching-private', to: 'private-coach', type: 'constrains' },
+  { from: 'anon-aggregation', to: 'sara-dashboard', type: 'constrains' },
+  { from: 'grudins-law', to: 'onboarding-convo', type: 'constrains' },
+  { from: 'grudins-law', to: 'private-coach', type: 'constrains' },
+  { from: 'ontology-moat', to: 'ontology', type: 'compounds' },
+  { from: 'cross-prod-learning', to: 'ontology', type: 'compounds' },
+  { from: 'methodology', to: 'ontology', type: 'feeds' },
+  { from: 'methodology', to: 'four-quadrants', type: 'enables' },
+  { from: 'trust-relationship', to: 'coaching-private', type: 'enables' },
+  { from: 'trust-relationship', to: 'pulse', type: 'enables' },
+  { from: '80-20', to: 'ops-context', type: 'validates' },
+  { from: '80-20', to: 'team-agreement', type: 'validates' },
+  { from: '80-20', to: 'pulse', type: 'validates' },
+  { from: 'we-dont-act', to: 'coaching-nudge', type: 'constrains' },
+  { from: 'we-dont-act', to: 'sara-dashboard', type: 'constrains' },
+  { from: 'consultant-model', to: 'kickoff-session', type: 'enables' },
+  { from: 'consultant-model', to: 'ontology', type: 'feeds' },
+  { from: 'pluggable-arch', to: 'ops-context', type: 'enables' },
+  { from: 'four-quadrants', to: 'team-agreement', type: 'feeds' },
+  // Quality & Observability edges
+  { from: 'llm-judge', to: 'private-coach', type: 'validates' },
+  { from: 'llm-judge', to: 'coaching-nudge', type: 'validates' },
+  { from: 'interpretation-trace', to: 'llm-judge', type: 'feeds' },
+  { from: 'interpretation-trace', to: 'private-coach', type: 'enables' },
+  { from: 'synthetic-users', to: 'llm-judge', type: 'feeds' },
+  { from: 'synthetic-users', to: 'memory-at-scale', type: 'validates' },
+  { from: 'memory-at-scale', to: 'ontology', type: 'enables' },
+  { from: 'memory-at-scale', to: 'ops-context', type: 'enables' },
+  { from: 'memory-at-scale', to: 'team-agreement', type: 'enables' },
+  { from: 'epistemic-humility', to: 'private-coach', type: 'constrains' },
+  { from: 'epistemic-humility', to: 'coaching-nudge', type: 'constrains' },
+  { from: 'epistemic-humility', to: 'sara-dashboard', type: 'constrains' },
+  { from: 'epistemic-humility', to: 'we-dont-act', type: 'compounds' },
+  // Research Foundations edges
+  { from: 'behavioral-science', to: 'coaching-nudge', type: 'informs' },
+  { from: 'behavioral-science', to: 'private-coach', type: 'informs' },
+  { from: 'behavioral-science', to: 'epistemic-humility', type: 'informs' },
+  { from: 'hci', to: 'epistemic-humility', type: 'informs' },
+  { from: 'hci', to: 'interpretation-trace', type: 'informs' },
+  { from: 'hci', to: 'sara-dashboard', type: 'informs' },
+  { from: 'cscw', to: 'team-agreement', type: 'informs' },
+  { from: 'cscw', to: 'ops-context', type: 'informs' },
+  { from: 'cscw', to: 'pulse-survey', type: 'informs' },
+  { from: 'research-advantage', to: 'we-dont-act', type: 'compounds' },
+];
+
+const PRESETS = {
+  'Full Map': { layers: Object.keys(LAYERS), description: 'All concepts and relationships' },
+  'Intelligence Stack': { layers: ['intelligence'], description: 'The 4 sources of intelligence' },
+  'User Journey': { layers: ['experience', 'intelligence'], description: 'What users experience + what powers it' },
+  'Trust Layer': { layers: ['trust', 'experience'], description: 'How trust shapes the product' },
+  'Strategy': { layers: ['moat', 'scaling'], description: 'Moat, scaling, and competitive position' },
+  'Quality Stack': { layers: ['quality', 'experience'], description: 'How we know the engine works + what users see' },
+  'Research': { layers: ['research', 'engine'], description: 'Research foundations informing the core engine' },
+  'Full Map': { layers: Object.keys(layers), description: 'All layers visible' },
+};
+
+// State
+const state = {
+  nodes: [],
+  edges: [],
+  activeEdgeType: 'feeds',
+  activeLayers: new Set(Object.keys(LAYERS)),
+  activePreset: 'Full Map',
+  connecting: null,
+  dragging: null,
+  dragOffset: { x: 0, y: 0 },
+  hoveredNode: null,
+};
+
+// Initialize nodes with positions
+function initNodes() {
+  const W = canvas.width;
+  const H = canvas.height;
+  const layerKeys = Object.keys(LAYERS);
+  const layerPositions = {};
+
+  // Arrange layers in a rough circle
+  const cx = W / 2, cy = H / 2;
+  const rx = W * 0.32, ry = H * 0.32;
+  layerKeys.forEach((k, i) => {
+    const angle = (i / layerKeys.length) * Math.PI * 2 - Math.PI / 2;
+    layerPositions[k] = { x: cx + Math.cos(angle) * rx, y: cy + Math.sin(angle) * ry };
+  });
+
+  state.nodes = NODES_DATA.map((d, i) => {
+    const layerNodes = NODES_DATA.filter(n => n.layer === d.layer);
+    const idx = layerNodes.indexOf(d);
+    const count = layerNodes.length;
+    const lp = layerPositions[d.layer];
+    const spread = 120;
+    const angle = (idx / count) * Math.PI * 2;
+    return {
+      ...d,
+      x: lp.x + Math.cos(angle) * spread * (0.5 + Math.random() * 0.5),
+      y: lp.y + Math.sin(angle) * spread * (0.5 + Math.random() * 0.5),
+      radius: 24,
+      knowledge: 'fuzzy',
+      visible: true,
+    };
+  });
+
+  state.edges = DEFAULT_EDGES.map(e => ({ ...e }));
+}
+
+// Canvas setup
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const tooltipEl = document.getElementById('tooltip');
+
+function resize() {
+  const area = canvas.parentElement;
+  canvas.width = area.clientWidth;
+  canvas.height = area.clientHeight;
+  draw();
+}
+window.addEventListener('resize', resize);
+
+function getNode(id) { return state.nodes.find(n => n.id === id); }
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw grid
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  // Draw edges
+  state.edges.forEach(e => {
+    const from = getNode(e.from);
+    const to = getNode(e.to);
+    if (!from || !to || !from.visible || !to.visible) return;
+    const etype = EDGE_TYPES.find(t => t.id === e.type) || EDGE_TYPES[0];
+    ctx.beginPath();
+    ctx.strokeStyle = etype.color + '66';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash(etype.dash);
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Arrow
+    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+    const dist = Math.hypot(to.x - from.x, to.y - from.y);
+    const arrowX = from.x + Math.cos(angle) * (dist - to.radius - 4);
+    const arrowY = from.y + Math.sin(angle) * (dist - to.radius - 4);
+    ctx.beginPath();
+    ctx.fillStyle = etype.color + '88';
+    ctx.moveTo(arrowX, arrowY);
+    ctx.lineTo(arrowX - 8 * Math.cos(angle - 0.4), arrowY - 8 * Math.sin(angle - 0.4));
+    ctx.lineTo(arrowX - 8 * Math.cos(angle + 0.4), arrowY - 8 * Math.sin(angle + 0.4));
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Draw connecting line
+  if (state.connecting && state.mousePos) {
+    const from = getNode(state.connecting);
+    if (from) {
+      ctx.beginPath();
+      ctx.strokeStyle = '#58a6ff44';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(state.mousePos.x, state.mousePos.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Draw nodes
+  state.nodes.forEach(n => {
+    if (!n.visible) return;
+    const layerColor = LAYER_COLORS[n.layer];
+    const isHovered = state.hoveredNode === n.id;
+    const isConnecting = state.connecting === n.id;
+
+    // Glow
+    if (isHovered || isConnecting) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius + 6, 0, Math.PI * 2);
+      ctx.fillStyle = layerColor + '22';
+      ctx.fill();
+    }
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#0d1117';
+    ctx.fill();
+    ctx.strokeStyle = layerColor;
+    ctx.lineWidth = isHovered ? 3 : 2;
+    ctx.stroke();
+
+    // Knowledge indicator
+    const kcolor = KNOWLEDGE_COLORS[n.knowledge];
+    ctx.beginPath();
+    ctx.arc(n.x + n.radius * 0.65, n.y - n.radius * 0.65, 6, 0, Math.PI * 2);
+    ctx.fillStyle = kcolor;
+    ctx.fill();
+
+    // Label
+    ctx.font = '11px -apple-system, BlinkMacSystemFont, system-ui, sans-serif';
+    ctx.fillStyle = isHovered ? '#f0f6fc' : '#c9d1d9';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const words = n.label.split(' ');
+    if (words.length <= 2) {
+      ctx.fillText(n.label, n.x, n.y);
+    } else {
+      const mid = Math.ceil(words.length / 2);
+      ctx.fillText(words.slice(0, mid).join(' '), n.x, n.y - 6);
+      ctx.fillText(words.slice(mid).join(' '), n.x, n.y + 6);
+    }
+  });
+}
+
+// Hit test
+function hitTest(x, y) {
+  for (let i = state.nodes.length - 1; i >= 0; i--) {
+    const n = state.nodes[i];
+    if (!n.visible) continue;
+    if (Math.hypot(x - n.x, y - n.y) <= n.radius + 4) return n;
+  }
+  return null;
+}
+
+function getCanvasPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+// Mouse events
+canvas.addEventListener('mousedown', (e) => {
+  const pos = getCanvasPos(e);
+  const node = hitTest(pos.x, pos.y);
+
+  if (e.shiftKey && node) {
+    // Start connecting
+    state.connecting = node.id;
+    state.mousePos = pos;
+    canvas.classList.add('connecting');
+    return;
+  }
+
+  if (node) {
+    if (e.detail === 2) {
+      // Double click: cycle knowledge
+      const idx = KNOWLEDGE_LEVELS.indexOf(node.knowledge);
+      node.knowledge = KNOWLEDGE_LEVELS[(idx + 1) % KNOWLEDGE_LEVELS.length];
+      updateSidebar();
+      updatePrompt();
+      draw();
+      return;
+    }
+    state.dragging = node;
+    state.dragOffset = { x: pos.x - node.x, y: pos.y - node.y };
+    canvas.classList.add('dragging');
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  const pos = getCanvasPos(e);
+
+  if (state.connecting) {
+    state.mousePos = pos;
+    draw();
+    return;
+  }
+
+  if (state.dragging) {
+    state.dragging.x = pos.x - state.dragOffset.x;
+    state.dragging.y = pos.y - state.dragOffset.y;
+    draw();
+    return;
+  }
+
+  const node = hitTest(pos.x, pos.y);
+  if (node) {
+    state.hoveredNode = node.id;
+    tooltipEl.style.display = 'block';
+    tooltipEl.style.left = (pos.x + 16) + 'px';
+    tooltipEl.style.top = (pos.y - 10) + 'px';
+    // Keep tooltip in viewport
+    const rect = tooltipEl.getBoundingClientRect();
+    const area = canvas.parentElement.getBoundingClientRect();
+    if (rect.right > area.right - 10) {
+      tooltipEl.style.left = (pos.x - rect.width - 16) + 'px';
+    }
+    if (rect.bottom > area.bottom - 10) {
+      tooltipEl.style.top = (pos.y - rect.height - 10) + 'px';
+    }
+    tooltipEl.innerHTML = `
+      <div class="tt-title">${node.label}</div>
+      <div class="tt-desc">${node.desc}</div>
+      <div class="tt-level" style="color:${KNOWLEDGE_COLORS[node.knowledge]}">
+        ${KNOWLEDGE_LABELS[node.knowledge]} — double-click to cycle
+      </div>
+    `;
+    draw();
+  } else if (state.hoveredNode) {
+    state.hoveredNode = null;
+    tooltipEl.style.display = 'none';
+    draw();
+  }
+});
+
+canvas.addEventListener('mouseup', (e) => {
+  if (state.connecting) {
+    const pos = getCanvasPos(e);
+    const target = hitTest(pos.x, pos.y);
+    if (target && target.id !== state.connecting) {
+      // Check if edge already exists
+      const exists = state.edges.some(e => e.from === state.connecting && e.to === target.id && e.type === state.activeEdgeType);
+      if (!exists) {
+        state.edges.push({ from: state.connecting, to: target.id, type: state.activeEdgeType });
+        updatePrompt();
+      }
+    }
+    state.connecting = null;
+    state.mousePos = null;
+    canvas.classList.remove('connecting');
+    draw();
+    return;
+  }
+
+  state.dragging = null;
+  canvas.classList.remove('dragging');
+});
+
+// Sidebar rendering
+function renderPresets() {
+  const container = document.getElementById('presets');
+  container.innerHTML = Object.entries(PRESETS).map(([name, p]) =>
+    `<button class="preset-btn ${state.activePreset === name ? 'active' : ''}" onclick="applyPreset('${name}')" title="${p.description}">${name}</button>`
+  ).join('');
+}
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  state.activePreset = name;
+  state.activeLayers = new Set(p.layers);
+  state.nodes.forEach(n => { n.visible = state.activeLayers.has(n.layer); });
+  renderPresets();
+  renderFilters();
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+function renderFilters() {
+  const container = document.getElementById('filters');
+  container.innerHTML = Object.entries(LAYERS).map(([id, l]) =>
+    `<button class="filter-btn ${state.activeLayers.has(id) ? 'active' : ''}" style="border-color:${state.activeLayers.has(id) ? l.color : ''};color:${state.activeLayers.has(id) ? l.color : ''}" onclick="toggleLayer('${id}')">${l.label}</button>`
+  ).join('');
+}
+
+function toggleLayer(id) {
+  if (state.activeLayers.has(id)) state.activeLayers.delete(id);
+  else state.activeLayers.add(id);
+  state.activePreset = null;
+  state.nodes.forEach(n => { n.visible = state.activeLayers.has(n.layer); });
+  renderPresets();
+  renderFilters();
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+function renderEdgeTypes() {
+  const container = document.getElementById('edgeTypes');
+  container.innerHTML = EDGE_TYPES.map(t =>
+    `<button class="edge-type-btn ${state.activeEdgeType === t.id ? 'active' : ''}" style="${state.activeEdgeType === t.id ? 'border-color:' + t.color + ';color:' + t.color : ''}" onclick="setEdgeType('${t.id}')">${t.label}</button>`
+  ).join('');
+}
+
+function setEdgeType(id) {
+  state.activeEdgeType = id;
+  renderEdgeTypes();
+}
+
+function updateSidebar() {
+  const list = document.getElementById('nodeList');
+  const visible = state.nodes.filter(n => n.visible);
+  // Group by layer
+  const grouped = {};
+  visible.forEach(n => {
+    if (!grouped[n.layer]) grouped[n.layer] = [];
+    grouped[n.layer].push(n);
+  });
+
+  let html = '';
+  Object.entries(grouped).forEach(([layer, nodes]) => {
+    html += `<li style="font-size:10px;color:${LAYER_COLORS[layer]};padding:8px 8px 2px;text-transform:uppercase;letter-spacing:0.5px">${LAYERS[layer].label}</li>`;
+    nodes.forEach(n => {
+      const edgeCount = state.edges.filter(e => (e.from === n.id || e.to === n.id) && getNode(e.from)?.visible && getNode(e.to)?.visible).length;
+      html += `
+        <li class="node-item" onclick="cycleKnowledge('${n.id}')">
+          <span class="node-dot" style="background:${LAYER_COLORS[n.layer]}"></span>
+          <span class="node-name">${n.label}</span>
+          ${edgeCount ? `<span class="edge-count">${edgeCount}</span>` : ''}
+          <span class="knowledge-badge ${n.knowledge}">${KNOWLEDGE_LABELS[n.knowledge]}</span>
+        </li>`;
+    });
+  });
+  list.innerHTML = html;
+}
+
+function cycleKnowledge(id) {
+  const node = getNode(id);
+  if (!node) return;
+  const idx = KNOWLEDGE_LEVELS.indexOf(node.knowledge);
+  node.knowledge = KNOWLEDGE_LEVELS[(idx + 1) % KNOWLEDGE_LEVELS.length];
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+function renderLegend() {
+  const container = document.getElementById('legend');
+  let html = '';
+  Object.entries(LAYERS).forEach(([id, l]) => {
+    html += `<span class="legend-item"><span class="legend-dot" style="background:${l.color}"></span>${l.label}</span>`;
+  });
+  html += '<br>';
+  EDGE_TYPES.forEach(t => {
+    html += `<span class="legend-item"><span style="width:16px;height:2px;background:${t.color};display:inline-block;${t.dash.length ? 'border-top:2px dashed ' + t.color + ';background:none;' : ''}"></span>${t.label}</span>`;
+  });
+  container.innerHTML = html;
+}
+
+function updatePrompt() {
+  const visible = state.nodes.filter(n => n.visible);
+  const known = visible.filter(n => n.knowledge === 'know').map(n => n.label);
+  const fuzzy = visible.filter(n => n.knowledge === 'fuzzy').map(n => n.label);
+  const unknown = visible.filter(n => n.knowledge === 'unknown').map(n => n.label);
+
+  const visibleIds = new Set(visible.map(n => n.id));
+  const visibleEdges = state.edges.filter(e => visibleIds.has(e.from) && visibleIds.has(e.to));
+  const edgeDescs = visibleEdges.map(e => {
+    const from = getNode(e.from);
+    const to = getNode(e.to);
+    const etype = EDGE_TYPES.find(t => t.id === e.type);
+    return `${from.label} ${etype.label} ${to.label}`;
+  });
+
+  let parts = [];
+  parts.push("I'm studying the PLIA Teams product — an AI-powered team effectiveness platform built on Axialent's HPT methodology.");
+
+  if (known.length) parts.push(`I already understand: ${known.join(', ')}.`);
+  if (fuzzy.length) parts.push(`I'm fuzzy on: ${fuzzy.join(', ')}.`);
+  if (unknown.length) parts.push(`I don't understand: ${unknown.join(', ')}.`);
+
+  if (edgeDescs.length) {
+    parts.push(`Key relationships I want to understand: ${edgeDescs.join('; ')}.`);
+  }
+
+  if (fuzzy.length || unknown.length) {
+    parts.push('Please explain the fuzzy and unknown concepts, focusing on these relationships. Build on what I already know. Use concrete examples from the product thesis (film production crews, Sara\'s dashboard, coaching nudges).');
+  }
+
+  document.getElementById('prompt').textContent = parts.join(' ');
+}
+
+function copyPrompt() {
+  const text = document.getElementById('prompt').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// Actions
+function autoLayout() {
+  const visible = state.nodes.filter(n => n.visible);
+  const W = canvas.width, H = canvas.height;
+
+  // Force-directed layout
+  for (let iter = 0; iter < 200; iter++) {
+    const damping = 0.95 - iter * 0.002;
+    visible.forEach(a => {
+      let fx = 0, fy = 0;
+      // Repulsion
+      visible.forEach(b => {
+        if (a === b) return;
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.max(Math.hypot(dx, dy), 1);
+        const force = 8000 / (dist * dist);
+        fx += (dx / dist) * force;
+        fy += (dy / dist) * force;
+      });
+      // Attraction along edges
+      state.edges.forEach(e => {
+        let other = null;
+        if (e.from === a.id) other = getNode(e.to);
+        else if (e.to === a.id) other = getNode(e.from);
+        if (!other || !other.visible) return;
+        const dx = other.x - a.x, dy = other.y - a.y;
+        const dist = Math.hypot(dx, dy);
+        const force = (dist - 120) * 0.02;
+        fx += (dx / dist) * force;
+        fy += (dy / dist) * force;
+      });
+      // Center gravity
+      fx += (W / 2 - a.x) * 0.001;
+      fy += (H / 2 - a.y) * 0.001;
+
+      a.x += fx * damping;
+      a.y += fy * damping;
+      // Clamp
+      a.x = Math.max(40, Math.min(W - 40, a.x));
+      a.y = Math.max(40, Math.min(H - 40, a.y));
+    });
+  }
+  draw();
+}
+
+function clearEdges() {
+  state.edges = [];
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+function resetKnowledge() {
+  state.nodes.forEach(n => { n.knowledge = 'fuzzy'; });
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+function showAll() {
+  state.activeLayers = new Set(Object.keys(LAYERS));
+  state.activePreset = 'Full Map';
+  state.nodes.forEach(n => { n.visible = true; });
+  renderPresets();
+  renderFilters();
+  updateSidebar();
+  updatePrompt();
+  draw();
+}
+
+// Init
+initNodes();
+resize();
+renderPresets();
+renderFilters();
+renderEdgeTypes();
+renderLegend();
+updateSidebar();
+updatePrompt();
+autoLayout();
+</script>
+</body>
+</html>
